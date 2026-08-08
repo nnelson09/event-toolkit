@@ -1,11 +1,11 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyD--gPKCThmznN8TSUwzkUOiiu_zdcGNZw",
-    authDomain: "temporizadores-93f53.firebaseapp.com",
-    databaseURL: "https://temporizadores-93f53-default-rtdb.firebaseio.com",
-    projectId: "temporizadores-93f53",
-    storageBucket: "temporizadores-93f53.firebasestorage.app",
-    messagingSenderId: "755177696618",
-    appId: "1:755177696618:web:eaa0ad9f3a57ac63034913"
+    apiKey: "AIzaSyD3c_wESbiWxuoYCB5i4shgI383StUVMFY",
+    authDomain: "event-toolkit-bce3b.firebaseapp.com",
+    databaseURL: "https://event-toolkit-bce3b-default-rtdb.firebaseio.com/",
+    projectId: "event-toolkit-bce3b",
+    storageBucket: "event-toolkit-bce3b.firebasestorage.app",
+    messagingSenderId: "881459904653",
+    appId: "1:881459904653:web:af29157a788af040bda2c4"
 };
 
 firebase.initializeApp(firebaseConfig);

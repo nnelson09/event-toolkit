@@ -1,5 +1,5 @@
 const Firebase = (() => {
-    const eventsRef = firebase.database().ref("temporizadores");
+    const eventsRef = firebase.database().ref("events");
 
     const CHILD_ADDED = "child_added";
     const CHILD_CHANGED = "child_changed";
@@ -32,9 +32,7 @@ const Firebase = (() => {
     async function getEvent(id) {
         const snapshot = await eventsRef.child(id).get();
 
-        return snapshot.exists()
-            ? snapshot.val()
-            : null;
+        return snapshot.exists() ? snapshot.val() : null;
     }
 
     async function addEvent(event) {
