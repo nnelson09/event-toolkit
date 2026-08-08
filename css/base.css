@@ -1,0 +1,78 @@
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+html,
+body {
+    height: 100%;
+
+    margin: 0;
+    padding: 2px 4px 4px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family:
+        "Segoe UI",
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar);
+    border-radius: 2px;
+}
+
+input,
+select,
+button {
+    font: inherit;
+}
+
+input,
+select {
+    height: 28px;
+
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-small);
+
+    color: var(--text);
+    outline: none;
+}
+
+input {
+    user-select: text;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+}
+
+button {
+    cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}

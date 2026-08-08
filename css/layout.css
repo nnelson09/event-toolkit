@@ -1,0 +1,85 @@
+.add-card-wrapper {
+    position: relative;
+
+    width: 100%;
+    margin-bottom: 6px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-card {
+    width: 100%;
+    padding: 6px;
+
+    overflow: hidden;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        box-shadow var(--transition),
+        transform var(--transition-fast),
+        opacity var(--transition);
+}
+
+.add-card.collapsed {
+    display: none;
+}
+
+.add-card.collapsed + .tab-toggle {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 999;
+
+    margin-top: 0;
+
+    transform: translateX(-50%);
+
+    border-top: none;
+}
+
+.add-card-wrapper:has(.add-card.collapsed) + #eventsList {
+    padding-top: 18px;
+}
+
+.row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+.row-top {
+    margin-bottom: 6px;
+}
+
+.row-bottom {
+    margin-top: 6px;
+
+    justify-content: flex-end;
+}
+
+#eventsList {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.empty-msg {
+    padding: 8px;
+
+    text-align: center;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+}

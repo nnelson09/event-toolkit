@@ -1,0 +1,9 @@
+# Documentación interna
+docs/
+
+# Pruebas
+tests/
+
+# Windows
+Thumbs.db
+Desktop.ini

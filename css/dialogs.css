@@ -1,0 +1,149 @@
+.dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--dialog-overlay);
+}
+
+.dialog-overlay[hidden] {
+    display: none;
+}
+
+.dialog {
+    width: 100%;
+    max-width: 260px;
+    padding: 12px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--dialog-shadow);
+}
+
+.dialog-header {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.dialog-title {
+    margin: 0;
+
+    color: var(--primary);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dialog-toggle {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: none;
+
+    color: var(--text-muted);
+
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+
+    transition:
+        color var(--transition),
+        transform var(--transition-fast);
+}
+
+.dialog-toggle:hover {
+    color: var(--primary);
+}
+
+.dialog-toggle:active {
+    transform: scale(0.92);
+}
+
+.dialog-body {
+    margin-bottom: 14px;
+}
+
+.dialog-body .row {
+    gap: 6px;
+}
+
+.dialog-input {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+
+    text-align: center;
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+.dialog-button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--bg-tertiary);
+
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-small);
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        transform var(--transition-fast);
+}
+
+.dialog-button:hover {
+    background: var(--border-light);
+    border-color: var(--primary);
+    color: var(--text-inverse);
+}
+
+.dialog-button:active {
+    transform: scale(0.95);
+}
+
+.dialog-button.accept:hover {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.dialog-button.cancel:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+}

@@ -1,0 +1,170 @@
+.mode-selector {
+    margin-bottom: 4px;
+    padding: 2px;
+
+    display: flex;
+    gap: 2px;
+
+    background: var(--bg);
+
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+}
+
+.btn-mode {
+    flex: 1;
+
+    padding: 2px 0;
+
+    background: transparent;
+
+    border: none;
+    border-radius: 3px;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    transition:
+        background var(--transition),
+        color var(--transition);
+}
+
+.btn-mode.active {
+    background: var(--bg-tertiary);
+    color: var(--primary);
+}
+
+.input-name {
+    width: 100%;
+    padding: 0 4px;
+}
+
+.input-num {
+    flex: 1;
+
+    margin-right: 4px;
+    padding: 0 2px;
+
+    text-align: center;
+}
+
+.input-num:last-child {
+    margin-right: 0;
+}
+
+.select-day {
+    flex: 1.2;
+    margin-right: 4px;
+}
+
+.target-time {
+    width: 116px;
+    height: 28px;
+
+    display: flex;
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    background: var(--input-bg);
+
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-small);
+}
+
+.target-time:focus-within {
+    border-color: var(--primary);
+}
+
+.target-time-input {
+    width: 50%;
+    min-width: 0;
+    height: 100%;
+
+    padding: 0 2px;
+
+    background: transparent;
+
+    border: none;
+    border-radius: 0;
+
+    text-align: center;
+}
+
+.target-time-input:first-child {
+    border-right: 1px solid var(--input-border);
+}
+
+.target-time-input:focus {
+    border-color: var(--input-border);
+}
+
+.btn-add-icon {
+    width: 30px;
+    height: 30px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    background: var(--button-bg);
+
+    border: 1px solid var(--button-bg);
+    border-radius: var(--radius-small);
+
+    color: var(--text-inverse);
+
+    font-size: 17px;
+    font-weight: 700;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition),
+        transform var(--transition-fast);
+}
+
+.btn-add-icon:hover {
+    background: var(--button-hover);
+
+    border-color: var(--button-hover);
+
+    box-shadow: var(--shadow-primary);
+
+    transform: translateY(-1px);
+}
+
+.btn-add-icon:active {
+    transform: scale(0.95);
+}
+
+.tab-toggle {
+    margin-top: -1px;
+    padding: 2px 12px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--border-dark);
+    border-top: none;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+    line-height: 1;
+
+    transition:
+        background var(--transition),
+        color var(--transition);
+}
+
+.tab-toggle:hover {
+    background: var(--bg-tertiary);
+    color: var(--primary);
+}

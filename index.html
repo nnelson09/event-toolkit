@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Eventos</title>
+
+        <link rel="stylesheet" href="css/themes.css" />
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/form.css" />
+        <link rel="stylesheet" href="css/cards.css" />
+        <link rel="stylesheet" href="css/dialogs.css" />
+        <link rel="stylesheet" href="css/auth.css" />
+
+        <!-- Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-auth-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-database-compat.js"></script>
+
+        <!-- Configuración -->
+        <script src="js/firebaseConfig.js" defer></script>
+
+        <!-- Backend -->
+        <script src="js/auth.js" defer></script>
+        <script src="js/firebase.js" defer></script>
+
+        <script src="js/event.js" defer></script>
+        <script src="js/eventFactory.js" defer></script>
+        <script src="js/events.js" defer></script>
+
+        <script src="js/timer.js" defer></script>
+        <script src="js/time.js" defer></script>
+
+        <!-- UI -->
+        <script src="js/uiForm.js" defer></script>
+        <script src="js/uiList.js" defer></script>
+        <script src="js/uiDialogs.js" defer></script>
+        <script src="js/uiNotifications.js" defer></script>
+        <script src="js/uiAuth.js" defer></script>
+        <script src="js/ui.js" defer></script>
+
+        <!-- Otros módulos -->
+        <script src="js/notifications.js" defer></script>
+        <script src="js/recurrence.js" defer></script>
+
+        <!-- Aplicación -->
+        <script src="js/app.js" defer></script>
+    </head>
+
+    <body>
+        <div id="authContainer"></div>
+
+        <div id="appContainer" hidden>
+            <div class="add-card-wrapper">
+                <div class="add-card" id="addCard">
+                    <div class="mode-selector">
+                        <button id="btnModeDur" type="button" class="btn-mode active">Duración</button>
+
+                        <button id="btnModeTarget" type="button" class="btn-mode">Objetivo</button>
+                    </div>
+
+                    <div class="row row-top">
+                        <input id="newName" class="input-name" type="text" placeholder="Nombre" />
+                    </div>
+
+                    <div class="row" id="rowDuration">
+                        <input id="newD" class="input-num" type="number" placeholder="D" min="0" max="999" />
+
+                        <input id="newH" class="input-num" type="number" placeholder="H" min="0" max="23" />
+
+                        <input id="newM" class="input-num" type="number" placeholder="M" min="0" max="59" />
+
+                        <input id="newS" class="input-num" type="number" placeholder="S" min="0" max="59" />
+                    </div>
+
+                    <div class="row" id="rowTarget" style="display: none">
+                        <select id="targetDay" class="select-day"></select>
+
+                        <div class="target-time">
+                            <input id="targetHour" class="target-time-input" type="number" min="0" max="23" placeholder="HH" />
+
+                            <input id="targetMinute" class="target-time-input" type="number" min="0" max="59" placeholder="MM" />
+                        </div>
+                    </div>
+
+                    <div class="row row-bottom">
+                        <button id="btnAdd" class="btn-add-icon" type="button" title="Agregar evento">＋</button>
+                    </div>
+                </div>
+
+                <button id="btnToggle" class="tab-toggle" type="button">▲ Ocultar</button>
+            </div>
+
+            <div id="eventsList">
+                <div class="empty-msg">Sin eventos activos.</div>
+            </div>
+
+            <div id="adjustDialog" class="dialog-overlay" hidden>
+                <div class="dialog">
+                    <div class="dialog-header">
+                        <h2 class="dialog-title">Ajustar</h2>
+
+                        <button id="btnAdjustMode" class="dialog-toggle" type="button">+</button>
+                    </div>
+
+                    <div class="dialog-body">
+                        <div class="row">
+                            <input id="adjustDays" class="dialog-input" type="number" min="0" max="999" placeholder="D" />
+
+                            <input id="adjustHours" class="dialog-input" type="number" min="0" max="999" placeholder="H" />
+
+                            <input id="adjustMinutes" class="dialog-input" type="number" min="0" max="999" placeholder="M" />
+                        </div>
+                    </div>
+
+                    <div class="dialog-footer">
+                        <button id="btnAdjustCancel" class="dialog-button cancel" type="button">✖</button>
+
+                        <button id="btnAdjustAccept" class="dialog-button accept" type="button">✔</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
