@@ -1,0 +1,125 @@
+.add-card-wrapper,
+.row-top {
+    margin-bottom: 6px;
+}
+
+#eventsList,
+.add-card-wrapper,
+.row {
+    width: 100%;
+    display: flex;
+}
+
+.add-card-wrapper {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-card {
+    width: 100%;
+    max-height: 200px;
+    padding: 6px;
+
+    overflow: hidden;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+
+    opacity: 1;
+}
+
+.add-card.collapsing {
+    animation: formCollapse 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+    pointer-events: none;
+}
+
+.add-card.expanding {
+    animation: formExpand 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+    pointer-events: none;
+}
+
+.add-card.hidden {
+    display: none;
+}
+
+.add-card.collapsed + .form-toggle {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 999;
+
+    margin-top: 0;
+
+    transform: translateX(-50%);
+}
+
+.add-card-wrapper:has(.add-card.collapsed) + #eventsList {
+    padding-top: 18px;
+}
+
+.row {
+    align-items: center;
+}
+
+#eventsList {
+    flex-direction: column;
+}
+
+.empty-msg {
+    padding: 8px;
+
+    text-align: center;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+}
+
+@keyframes formCollapse {
+    from {
+        max-height: 200px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+
+        border-width: 1px;
+
+        opacity: 1;
+    }
+
+    to {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        border-width: 0;
+
+        opacity: 0;
+    }
+}
+
+@keyframes formExpand {
+    from {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+
+        border-width: 0;
+
+        opacity: 0;
+    }
+
+    to {
+        max-height: 200px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+
+        border-width: 1px;
+
+        opacity: 1;
+    }
+}

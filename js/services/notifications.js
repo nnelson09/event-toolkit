@@ -1,10 +1,10 @@
 const Notifications = (() => {
     function start() {
-        // Reservado para la programación de notificaciones.
+        // Reserved for notification scheduling.
     }
 
     function stop() {
-        // Reservado para liberar recursos de notificaciones.
+        // Reserved for notification resource cleanup.
     }
 
     return {

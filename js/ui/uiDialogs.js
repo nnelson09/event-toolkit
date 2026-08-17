@@ -14,6 +14,7 @@ const UIDialogs = (() => {
     function start() {
         cacheDOM();
         bindEvents();
+        renderIcons();
     }
 
     function cacheDOM() {
@@ -38,11 +39,27 @@ const UIDialogs = (() => {
         });
     }
 
+    function renderIcons() {
+        btnCancel.replaceChildren(Icons.create(Icons.CANCEL));
+
+        btnAccept.replaceChildren(Icons.create(Icons.ACCEPT));
+
+        updateModeIcon();
+    }
+
     function onAccept(callback) {
+        if (typeof callback !== "function") {
+            throw new TypeError("Accept callback must be a function.");
+        }
+
         acceptCallback = callback;
     }
 
     function open(id) {
+        if (typeof id !== "string" || id === "") {
+            throw new TypeError("Event id must be a non-empty string.");
+        }
+
         currentId = id;
 
         clear();
@@ -56,10 +73,18 @@ const UIDialogs = (() => {
     }
 
     function read() {
+        const days = readDurationNumber(inputDays);
+        const hours = readDurationNumber(inputHours);
+        const minutes = readDurationNumber(inputMinutes);
+
+        if (days === null || hours === null || minutes === null) {
+            return null;
+        }
+
         const milliseconds = Time.duration({
-            days: Number(inputDays.value) || 0,
-            hours: Number(inputHours.value) || 0,
-            minutes: Number(inputMinutes.value) || 0
+            days,
+            hours,
+            minutes
         });
 
         return {
@@ -75,13 +100,13 @@ const UIDialogs = (() => {
 
         direction = -1;
 
-        updateMode();
+        updateModeIcon();
     }
 
     function notifyAccept() {
         const data = read();
 
-        if (data.milliseconds === 0) {
+        if (data === null || data.id === null || data.milliseconds === 0) {
             return;
         }
 
@@ -95,11 +120,25 @@ const UIDialogs = (() => {
     function toggleMode() {
         direction *= -1;
 
-        updateMode();
+        updateModeIcon();
     }
 
-    function updateMode() {
-        btnMode.textContent = direction < 0 ? "+" : "−";
+    function updateModeIcon() {
+        const icon = direction < 0 ? Icons.ADD : Icons.SUBTRACT;
+
+        btnMode.replaceChildren(Icons.create(icon));
+
+        btnMode.title = direction < 0 ? "Switch to add" : "Switch to subtract";
+    }
+
+    function readDurationNumber(input) {
+        if (input.value === "") {
+            return 0;
+        }
+
+        const value = Number(input.value);
+
+        return Number.isFinite(value) ? value : null;
     }
 
     return {

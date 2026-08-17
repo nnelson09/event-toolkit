@@ -1,9 +1,9 @@
 const UIList = (() => {
+    const displays = new Map();
+
     let container;
     let deleteCallback = null;
     let adjustCallback = null;
-
-    const displays = new Map();
 
     function start() {
         cacheDOM();
@@ -19,19 +19,32 @@ const UIList = (() => {
     }
 
     function onDelete(callback) {
+        if (typeof callback !== "function") {
+            throw new TypeError("Delete callback must be a function.");
+        }
+
         deleteCallback = callback;
     }
 
     function onAdjust(callback) {
+        if (typeof callback !== "function") {
+            throw new TypeError("Adjust callback must be a function.");
+        }
+
         adjustCallback = callback;
     }
 
     function render(events) {
+        if (!Array.isArray(events)) {
+            throw new TypeError("Events must be an array.");
+        }
+
+        events.forEach(Event.validate);
+
         clear();
 
         if (events.length === 0) {
             renderEmpty();
-
             return;
         }
 
@@ -55,7 +68,7 @@ const UIList = (() => {
         const empty = document.createElement("div");
 
         empty.className = "empty-msg";
-        empty.textContent = "Sin eventos activos.";
+        empty.textContent = "No active events.";
 
         container.appendChild(empty);
     }
@@ -81,13 +94,14 @@ const UIList = (() => {
         const title = document.createElement("div");
 
         title.className = "event-title";
-        title.textContent = event.name || "Evento";
+        title.textContent = event.name || "Event";
 
         info.appendChild(title);
 
         const display = document.createElement("div");
 
         display.className = "event-display";
+
         display.textContent = Time.format(Time.remaining(event.targetTime));
 
         info.appendChild(display);
@@ -100,6 +114,7 @@ const UIList = (() => {
         const target = document.createElement("div");
 
         target.className = "event-sub";
+
         target.textContent = Time.formatTarget(event.targetTime);
 
         info.appendChild(target);
@@ -114,7 +129,9 @@ const UIList = (() => {
 
         btnAdjust.type = "button";
         btnAdjust.className = "btn-action";
-        btnAdjust.textContent = "⏱";
+        btnAdjust.title = "Adjust time";
+
+        btnAdjust.appendChild(Icons.create(Icons.ADJUST));
 
         btnAdjust.addEventListener("click", () => {
             if (adjustCallback) {
@@ -128,7 +145,9 @@ const UIList = (() => {
 
         btnDelete.type = "button";
         btnDelete.className = "btn-action btn-del";
-        btnDelete.textContent = "🗑";
+        btnDelete.title = "Delete";
+
+        btnDelete.appendChild(Icons.create(Icons.DELETE));
 
         btnDelete.addEventListener("click", () => {
             if (deleteCallback) {

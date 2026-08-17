@@ -7,30 +7,37 @@ const App = (() => {
     }
 
     function handleAuthChanged(user) {
-        if (user) {
-            startApplication();
-            UIAuth.showApp();
+        try {
+            if (user) {
+                startApp();
+                return;
+            }
 
-            return;
+            stopApp();
+        } catch (error) {
+            ErrorHandler.handle(error, user ? "Starting application" : "Stopping application");
         }
-
-        stopApplication();
-        UI.reset();
-        UIAuth.showAuth();
     }
 
-    function startApplication() {
+    function startApp() {
+        Config.start();
         Events.start();
         Timer.start();
         Notifications.start();
         Recurrence.start();
+
+        UIAuth.showApp();
     }
 
-    function stopApplication() {
+    function stopApp() {
         Recurrence.stop();
         Notifications.stop();
         Timer.stop();
         Events.stop();
+        Config.stop();
+
+        UI.reset();
+        UIAuth.showAuth();
     }
 
     return {
@@ -39,5 +46,9 @@ const App = (() => {
 })();
 
 window.addEventListener("DOMContentLoaded", () => {
-    App.start();
+    try {
+        App.start();
+    } catch (error) {
+        ErrorHandler.handle(error, "Starting Event Toolkit");
+    }
 });

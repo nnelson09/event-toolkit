@@ -1,16 +1,14 @@
 const Auth = (() => {
-    let user = null;
-    let initialized = false;
-
     const listeners = [];
 
-    firebase.auth().onAuthStateChanged(currentUser => {
-        user = currentUser;
+    let currentUser = null;
+    let initialized = false;
+
+    firebase.auth().onAuthStateChanged(user => {
+        currentUser = user;
         initialized = true;
 
-        listeners.forEach(callback => {
-            callback(user);
-        });
+        notifyChanged();
     });
 
     async function signIn(email, password) {
@@ -24,19 +22,25 @@ const Auth = (() => {
     }
 
     function getUser() {
-        return user;
+        return currentUser;
     }
 
     function isAuthenticated() {
-        return user !== null;
+        return currentUser !== null;
     }
 
     function onStateChanged(callback) {
         listeners.push(callback);
 
         if (initialized) {
-            callback(user);
+            callback(currentUser);
         }
+    }
+
+    function notifyChanged() {
+        listeners.forEach(callback => {
+            callback(currentUser);
+        });
     }
 
     return {

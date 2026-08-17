@@ -1,0 +1,131 @@
+.eternitys-reach {
+    position: fixed;
+    inset: 6px 4px 24px;
+    z-index: 850;
+
+    padding: 8px;
+
+    overflow-y: auto;
+
+    background: var(--bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--dialog-shadow);
+}
+
+.eternitys-reach[hidden] {
+    display: none;
+}
+
+.eternitys-reach-header {
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.eternitys-reach-title {
+    margin: 0;
+
+    color: var(--primary);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.eternitys-reach-close {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--bg-tertiary);
+
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-small);
+
+    color: var(--text-secondary);
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        transform var(--transition-fast);
+}
+
+.eternitys-reach-close:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: var(--text-inverse);
+}
+
+.eternitys-reach-close:active {
+    transform: scale(0.95);
+}
+
+.eternitys-reach-content {
+    min-height: calc(100% - 41px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.eternitys-reach-time {
+    margin-bottom: 18px;
+
+    color: var(--text);
+
+    font-family: Consolas, monospace;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.eternitys-reach-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.eternitys-reach-button {
+    min-width: 70px;
+    height: 30px;
+    padding: 0 10px;
+
+    background: var(--bg-tertiary);
+
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-small);
+
+    color: var(--text-secondary);
+
+    transition:
+        border-color var(--transition),
+        color var(--transition),
+        transform var(--transition-fast);
+}
+
+.eternitys-reach-button:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.eternitys-reach-button:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.eternitys-reach-button:disabled {
+    cursor: default;
+    opacity: 0.45;
+}

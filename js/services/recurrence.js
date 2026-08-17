@@ -1,10 +1,10 @@
 const Recurrence = (() => {
     function start() {
-        // Reservado para gestionar eventos recurrentes.
+        // Reserved for recurring event management.
     }
 
     function stop() {
-        // Reservado para liberar recursos de recurrencia.
+        // Reserved for recurrence resource cleanup.
     }
 
     return {

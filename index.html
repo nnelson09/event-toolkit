@@ -1,52 +1,74 @@
 <!doctype html>
-<html lang="es">
+
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Eventos</title>
+        <title>Event Toolkit</title>
 
-        <link rel="stylesheet" href="css/themes.css" />
-        <link rel="stylesheet" href="css/base.css" />
-        <link rel="stylesheet" href="css/layout.css" />
-        <link rel="stylesheet" href="css/form.css" />
-        <link rel="stylesheet" href="css/cards.css" />
-        <link rel="stylesheet" href="css/dialogs.css" />
-        <link rel="stylesheet" href="css/auth.css" />
+        <!-- Base -->
+        <link rel="stylesheet" href="css/base/themes.css" />
+        <link rel="stylesheet" href="css/base/base.css" />
+        <link rel="stylesheet" href="css/base/layout.css" />
+
+        <!-- Components -->
+        <link rel="stylesheet" href="css/components/toggle.css" />
+        <link rel="stylesheet" href="css/components/cards.css" />
+        <link rel="stylesheet" href="css/components/dialogs.css" />
+        <link rel="stylesheet" href="css/components/auth.css" />
+
+        <!-- Events -->
+        <link rel="stylesheet" href="css/events/form.css" />
+
+        <!-- Tools -->
+        <link rel="stylesheet" href="css/tools/toolsMenu.css" />
+        <link rel="stylesheet" href="css/tools/troopDivider.css" />
+        <link rel="stylesheet" href="css/tools/eternitysReach.css" />
 
         <!-- Firebase -->
         <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-auth-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-database-compat.js"></script>
 
-        <!-- Configuración -->
-        <script src="js/firebaseConfig.js" defer></script>
-
         <!-- Backend -->
-        <script src="js/auth.js" defer></script>
-        <script src="js/firebase.js" defer></script>
+        <script src="js/backend/firebaseConfig.js" defer></script>
+        <script src="js/backend/auth.js" defer></script>
+        <script src="js/backend/firebase.js" defer></script>
 
-        <script src="js/event.js" defer></script>
-        <script src="js/eventFactory.js" defer></script>
-        <script src="js/events.js" defer></script>
+        <!-- Core -->
+        <script src="js/core/errorHandler.js" defer></script>
+        <script src="js/core/config.js" defer></script>
+        <script src="js/core/timer.js" defer></script>
+        <script src="js/core/time.js" defer></script>
 
-        <script src="js/timer.js" defer></script>
-        <script src="js/time.js" defer></script>
+        <!-- Events -->
+        <script src="js/events/event.js" defer></script>
+        <script src="js/events/eventFactory.js" defer></script>
+        <script src="js/events/events.js" defer></script>
+
+        <!-- Tools -->
+        <script src="js/tools/troopDivider.js" defer></script>
+        <script src="js/tools/uiTroopDivider.js" defer></script>
+        <script src="js/tools/uiEternitysReach.js" defer></script>
 
         <!-- UI -->
-        <script src="js/uiForm.js" defer></script>
-        <script src="js/uiList.js" defer></script>
-        <script src="js/uiDialogs.js" defer></script>
-        <script src="js/uiNotifications.js" defer></script>
-        <script src="js/uiAuth.js" defer></script>
-        <script src="js/ui.js" defer></script>
+        <script src="js/ui/icons.js" defer></script>
+        <script src="js/ui/uiToggle.js" defer></script>
+        <script src="js/ui/uiForm.js" defer></script>
+        <script src="js/ui/uiList.js" defer></script>
+        <script src="js/ui/uiDialogs.js" defer></script>
+        <script src="js/ui/uiNotifications.js" defer></script>
+        <script src="js/ui/uiAuth.js" defer></script>
+        <script src="js/ui/uiToolsMenu.js" defer></script>
+        <script src="js/ui/ui.js" defer></script>
 
-        <!-- Otros módulos -->
-        <script src="js/notifications.js" defer></script>
-        <script src="js/recurrence.js" defer></script>
+        <!-- Services -->
+        <script src="js/services/notifications.js" defer></script>
+        <script src="js/services/recurrence.js" defer></script>
 
-        <!-- Aplicación -->
+        <!-- Application -->
         <script src="js/app.js" defer></script>
     </head>
 
@@ -55,73 +77,145 @@
 
         <div id="appContainer" hidden>
             <div class="add-card-wrapper">
-                <div class="add-card" id="addCard">
+                <div id="addCard" class="add-card collapsed hidden">
                     <div class="mode-selector">
-                        <button id="btnModeDur" type="button" class="btn-mode active">Duración</button>
-
-                        <button id="btnModeTarget" type="button" class="btn-mode">Objetivo</button>
+                        <button id="btnModeDur" class="btn-mode active" type="button">Duration</button>
+                        <button id="btnModeTarget" class="btn-mode" type="button">Target</button>
                     </div>
 
                     <div class="row row-top">
-                        <input id="newName" class="input-name" type="text" placeholder="Nombre" />
+                        <input id="newName" class="input-name" type="text" placeholder="Name" />
                     </div>
 
-                    <div class="row" id="rowDuration">
-                        <input id="newD" class="input-num" type="number" placeholder="D" min="0" max="999" />
-
-                        <input id="newH" class="input-num" type="number" placeholder="H" min="0" max="23" />
-
-                        <input id="newM" class="input-num" type="number" placeholder="M" min="0" max="59" />
-
-                        <input id="newS" class="input-num" type="number" placeholder="S" min="0" max="59" />
-                    </div>
-
-                    <div class="row" id="rowTarget" style="display: none">
-                        <select id="targetDay" class="select-day"></select>
-
-                        <div class="target-time">
-                            <input id="targetHour" class="target-time-input" type="number" min="0" max="23" placeholder="HH" />
-
-                            <input id="targetMinute" class="target-time-input" type="number" min="0" max="59" placeholder="MM" />
+                    <div class="row row-create">
+                        <div id="rowDuration" class="row row-fields">
+                            <input id="newD" class="input-num" type="number" min="0" max="999" placeholder="D" />
+                            <input id="newH" class="input-num" type="number" min="0" max="23" placeholder="H" />
+                            <input id="newM" class="input-num" type="number" min="0" max="59" placeholder="M" />
+                            <input id="newS" class="input-num" type="number" min="0" max="59" placeholder="S" />
                         </div>
-                    </div>
 
-                    <div class="row row-bottom">
-                        <button id="btnAdd" class="btn-add-icon" type="button" title="Agregar evento">＋</button>
+                        <div id="rowTarget" class="row row-fields" style="display: none">
+                            <select id="targetDay" class="select-day"></select>
+
+                            <div class="target-time">
+                                <input id="targetHour" class="target-time-input" type="number" min="0" max="23" placeholder="HH" />
+                                <input id="targetMinute" class="target-time-input" type="number" min="0" max="59" placeholder="MM" />
+                            </div>
+                        </div>
+
+                        <button id="btnAdd" class="btn-add-icon" type="button" title="Add event"></button>
                     </div>
                 </div>
 
-                <button id="btnToggle" class="tab-toggle" type="button">▲ Ocultar</button>
+                <button id="btnToggle" class="toggle-tab form-toggle" type="button" title="Show form"></button>
             </div>
 
             <div id="eventsList">
-                <div class="empty-msg">Sin eventos activos.</div>
+                <div class="empty-msg">No active events.</div>
             </div>
 
             <div id="adjustDialog" class="dialog-overlay" hidden>
                 <div class="dialog">
                     <div class="dialog-header">
-                        <h2 class="dialog-title">Ajustar</h2>
+                        <h2 class="dialog-title">Adjust</h2>
 
-                        <button id="btnAdjustMode" class="dialog-toggle" type="button">+</button>
+                        <button id="btnAdjustMode" class="dialog-toggle" type="button" title="Switch to add"></button>
                     </div>
 
                     <div class="dialog-body">
                         <div class="row">
                             <input id="adjustDays" class="dialog-input" type="number" min="0" max="999" placeholder="D" />
-
                             <input id="adjustHours" class="dialog-input" type="number" min="0" max="999" placeholder="H" />
-
                             <input id="adjustMinutes" class="dialog-input" type="number" min="0" max="999" placeholder="M" />
                         </div>
                     </div>
 
                     <div class="dialog-footer">
-                        <button id="btnAdjustCancel" class="dialog-button cancel" type="button">✖</button>
-
-                        <button id="btnAdjustAccept" class="dialog-button accept" type="button">✔</button>
+                        <button id="btnAdjustCancel" class="dialog-button cancel" type="button" title="Cancel"></button>
+                        <button id="btnAdjustAccept" class="dialog-button accept" type="button" title="Accept"></button>
                     </div>
                 </div>
+            </div>
+
+            <div id="troopDivider" class="troop-divider" hidden>
+                <div class="troop-divider-header">
+                    <h2 class="troop-divider-title">Troop Divider</h2>
+
+                    <button id="btnTroopDividerClose" class="troop-divider-close" type="button" title="Close"></button>
+                </div>
+
+                <div class="troop-queues">
+                    <span class="troop-queues-label">Queues</span>
+
+                    <select id="troopQueues" class="troop-queues-select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6" selected>6</option>
+                    </select>
+                </div>
+
+                <div class="troop-form">
+                    <div class="troop-form-row">
+                        <select id="troopType" class="troop-type">
+                            <option value="infantry">Infantry</option>
+                            <option value="cavalry">Cavalry</option>
+                            <option value="archer">Archers</option>
+                        </select>
+
+                        <select id="troopLevel" class="troop-level" title="Level"></select>
+
+                        <input id="troopAmount" class="troop-amount" type="text" inputmode="numeric" autocomplete="off" placeholder="Amount" />
+
+                        <button id="btnTroopAdd" class="troop-add" type="button" title="Add troops"></button>
+                    </div>
+                </div>
+
+                <div class="troop-summary">
+                    <div class="troop-summary-item">
+                        <div class="troop-summary-label">Queue 1</div>
+                        <div id="troopTotalFirst" class="troop-summary-value">0</div>
+                    </div>
+
+                    <div class="troop-summary-item">
+                        <div id="troopTotalOthersLabel" class="troop-summary-label">Each Q2–Q6</div>
+                        <div id="troopTotalOthers" class="troop-summary-value">0</div>
+                    </div>
+                </div>
+
+                <div id="troopResults" class="troop-results"></div>
+            </div>
+
+            <div id="eternitysReach" class="eternitys-reach" hidden>
+                <div class="eternitys-reach-header">
+                    <h2 class="eternitys-reach-title">Eternity's Reach</h2>
+
+                    <button id="btnEternitysReachClose" class="eternitys-reach-close" type="button" title="Close"></button>
+                </div>
+
+                <div class="eternitys-reach-content">
+                    <div id="eternitysReachTime" class="eternitys-reach-time">01:00</div>
+
+                    <div class="eternitys-reach-actions">
+                        <button id="btnEternitysReachStart" class="eternitys-reach-button" type="button">Start</button>
+                        <button id="btnEternitysReachReset" class="eternitys-reach-button" type="button">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tools-menu-wrapper">
+                <div id="toolsMenu" class="tools-menu" hidden>
+                    <div class="tools-menu-title">Tools</div>
+
+                    <button id="btnTroopDivider" class="tools-menu-item" type="button">Troop Divider</button>
+
+                    <button id="btnEternitysReach" class="tools-menu-item" type="button">Eternity's Reach</button>
+                </div>
+
+                <button id="btnToolsMenu" class="toggle-tab tools-menu-toggle" type="button" title="Show tools" aria-expanded="false"></button>
             </div>
         </div>
     </body>

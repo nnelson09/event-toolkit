@@ -1,6 +1,6 @@
 const UINotifications = (() => {
     function start() {
-        // Reservado para inicializaciones futuras.
+        // Reserved for future initialization.
     }
 
     function info(message) {
@@ -17,7 +17,6 @@ const UINotifications = (() => {
 
     return {
         start,
-
         info,
         success,
         error

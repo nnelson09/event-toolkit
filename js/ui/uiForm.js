@@ -1,6 +1,11 @@
 const UIForm = (() => {
+    const MODE_DURATION = "duration";
+    const MODE_TARGET = "target";
+
     let mode = null;
     let createCallback = null;
+    let transitioning = false;
+    let collapseTimer = null;
 
     let card;
     let btnToggle;
@@ -21,9 +26,10 @@ const UIForm = (() => {
     function start() {
         cacheDOM();
         bindEvents();
+        renderIcons();
 
         populateTargetDays();
-        setMode("duration");
+        setMode(MODE_DURATION);
     }
 
     function cacheDOM() {
@@ -46,18 +52,28 @@ const UIForm = (() => {
 
     function bindEvents() {
         btnModeDuration.addEventListener("click", () => {
-            setMode("duration");
+            setMode(MODE_DURATION);
         });
 
         btnModeTarget.addEventListener("click", () => {
-            setMode("target");
+            setMode(MODE_TARGET);
         });
 
         btnToggle.addEventListener("click", togglePanel);
         btnAdd.addEventListener("click", notifyCreate);
     }
 
+    function renderIcons() {
+        btnAdd.replaceChildren(Icons.create(Icons.ADD));
+
+        updateToggle();
+    }
+
     function onCreate(callback) {
+        if (typeof callback !== "function") {
+            throw new TypeError("Create callback must be a function.");
+        }
+
         createCallback = callback;
     }
 
@@ -65,16 +81,18 @@ const UIForm = (() => {
         return {
             mode,
             name: inputName.value.trim(),
+
             duration: {
-                days: Number(inputDays.value) || 0,
-                hours: Number(inputHours.value) || 0,
-                minutes: Number(inputMinutes.value) || 0,
-                seconds: Number(inputSeconds.value) || 0
+                days: readDurationNumber(inputDays),
+                hours: readDurationNumber(inputHours),
+                minutes: readDurationNumber(inputMinutes),
+                seconds: readDurationNumber(inputSeconds)
             },
+
             target: {
-                day: Number(inputTargetDay.value),
-                hour: readRequiredNumber(inputTargetHour),
-                minute: readRequiredNumber(inputTargetMinute)
+                day: readNumber(inputTargetDay),
+                hour: readNumber(inputTargetHour),
+                minute: readNumber(inputTargetMinute)
             }
         };
     }
@@ -101,11 +119,18 @@ const UIForm = (() => {
 
     function reset() {
         clear();
-        setMode("duration");
+        setMode(MODE_DURATION);
 
-        card.classList.remove("collapsed");
-        btnToggle.textContent = "▲ Ocultar";
+        transitioning = false;
 
+        clearTimeout(collapseTimer);
+        collapseTimer = null;
+
+        card.classList.remove("collapsing", "expanding");
+
+        card.classList.add("collapsed", "hidden");
+
+        updateToggle();
         populateTargetDays();
     }
 
@@ -114,24 +139,30 @@ const UIForm = (() => {
     }
 
     function setMode(newMode) {
+        if (newMode !== MODE_DURATION && newMode !== MODE_TARGET) {
+            throw new RangeError(`Unsupported form mode: ${newMode}`);
+        }
+
         if (newMode === mode) {
             return;
         }
 
-        if (mode === "duration") {
+        if (mode === MODE_DURATION) {
             clearDuration();
-        } else if (mode === "target") {
+        } else if (mode === MODE_TARGET) {
             clearTarget();
         }
 
         mode = newMode;
 
-        const isDuration = mode === "duration";
+        const isDuration = mode === MODE_DURATION;
 
         rowDuration.style.display = isDuration ? "flex" : "none";
+
         rowTarget.style.display = isDuration ? "none" : "flex";
 
         btnModeDuration.classList.toggle("active", isDuration);
+
         btnModeTarget.classList.toggle("active", !isDuration);
     }
 
@@ -155,13 +186,94 @@ const UIForm = (() => {
     }
 
     function togglePanel() {
-        const collapsed = card.classList.toggle("collapsed");
+        if (transitioning) {
+            return;
+        }
 
-        btnToggle.textContent = collapsed ? "▼ Mostrar" : "▲ Ocultar";
+        if (card.classList.contains("collapsed")) {
+            expandPanel();
+        } else {
+            collapsePanel();
+        }
     }
 
-    function readRequiredNumber(input) {
-        return input.value === "" ? null : Number(input.value);
+    function collapsePanel() {
+        transitioning = true;
+
+        card.classList.add("collapsing");
+
+        collapseTimer = setTimeout(() => {
+            card.classList.add("collapsed");
+
+            updateToggle();
+        }, 180);
+
+        card.addEventListener(
+            "animationend",
+            () => {
+                clearTimeout(collapseTimer);
+                collapseTimer = null;
+
+                card.classList.remove("collapsing");
+                card.classList.add("collapsed", "hidden");
+
+                transitioning = false;
+
+                updateToggle();
+            },
+            { once: true }
+        );
+    }
+
+    function expandPanel() {
+        transitioning = true;
+
+        card.classList.remove("hidden");
+        card.classList.add("expanding");
+
+        requestAnimationFrame(() => {
+            card.classList.remove("collapsed");
+
+            updateToggle();
+        });
+
+        card.addEventListener(
+            "animationend",
+            () => {
+                card.classList.remove("expanding");
+
+                transitioning = false;
+            },
+            { once: true }
+        );
+    }
+
+    function updateToggle() {
+        const collapsed = card.classList.contains("collapsed");
+
+        UIToggle.render(btnToggle, collapsed ? Icons.DOWN : Icons.UP, collapsed ? "Show form" : "Hide form");
+    }
+
+    function readDurationNumber(input) {
+        if (input.value === "") {
+            return 0;
+        }
+
+        return parseNumber(input.value);
+    }
+
+    function readNumber(input) {
+        if (input.value === "") {
+            return null;
+        }
+
+        return parseNumber(input.value);
+    }
+
+    function parseNumber(value) {
+        const number = Number(value);
+
+        return Number.isFinite(number) ? number : null;
     }
 
     return {

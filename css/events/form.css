@@ -13,7 +13,6 @@
 
 .btn-mode {
     flex: 1;
-
     padding: 2px 0;
 
     background: transparent;
@@ -42,9 +41,17 @@
     padding: 0 4px;
 }
 
+.row-create {
+    gap: 4px;
+}
+
+.row-fields {
+    flex: 1;
+    min-width: 0;
+}
+
 .input-num {
     flex: 1;
-
     margin-right: 4px;
     padding: 0 2px;
 
@@ -83,7 +90,6 @@
     width: 50%;
     min-width: 0;
     height: 100%;
-
     padding: 0 2px;
 
     background: transparent;
@@ -103,68 +109,39 @@
 }
 
 .btn-add-icon {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
-    padding: 0;
+    background: var(--bg-tertiary);
 
-    background: var(--button-bg);
-
-    border: 1px solid var(--button-bg);
+    border: 1px solid var(--border-light);
     border-radius: var(--radius-small);
 
-    color: var(--text-inverse);
-
-    font-size: 17px;
-    font-weight: 700;
+    color: var(--text-secondary);
 
     transition:
         background var(--transition),
         border-color var(--transition),
-        box-shadow var(--transition),
+        color var(--transition),
         transform var(--transition-fast);
 }
 
 .btn-add-icon:hover {
-    background: var(--button-hover);
-
-    border-color: var(--button-hover);
-
-    box-shadow: var(--shadow-primary);
-
-    transform: translateY(-1px);
+    background: var(--button-bg);
+    border-color: var(--primary);
+    color: var(--text-inverse);
 }
 
 .btn-add-icon:active {
     transform: scale(0.95);
 }
 
-.tab-toggle {
+.form-toggle {
     margin-top: -1px;
-    padding: 2px 12px;
-
-    background: var(--card-bg);
-
-    border: 1px solid var(--border-dark);
-    border-top: none;
-    border-bottom-left-radius: var(--radius);
-    border-bottom-right-radius: var(--radius);
-
-    color: var(--text-muted);
-
-    font-size: 10px;
-    line-height: 1;
-
-    transition:
-        background var(--transition),
-        color var(--transition);
-}
-
-.tab-toggle:hover {
-    background: var(--bg-tertiary);
-    color: var(--primary);
 }

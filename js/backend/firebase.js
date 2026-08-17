@@ -1,9 +1,11 @@
 const Firebase = (() => {
     const eventsRef = firebase.database().ref("events");
+    const configRef = firebase.database().ref("config");
 
-    const CHILD_ADDED = "child_added";
-    const CHILD_CHANGED = "child_changed";
-    const CHILD_REMOVED = "child_removed";
+    const EVENT_ADDED = "child_added";
+    const EVENT_CHANGED = "child_changed";
+    const EVENT_REMOVED = "child_removed";
+    const VALUE = "value";
 
     function listenEvents(callbacks) {
         const handleAdded = snapshot => {
@@ -18,21 +20,29 @@ const Firebase = (() => {
             callbacks.onRemoved?.(snapshot.key);
         };
 
-        eventsRef.on(CHILD_ADDED, handleAdded);
-        eventsRef.on(CHILD_CHANGED, handleChanged);
-        eventsRef.on(CHILD_REMOVED, handleRemoved);
+        eventsRef.on(EVENT_ADDED, handleAdded);
+        eventsRef.on(EVENT_CHANGED, handleChanged);
+        eventsRef.on(EVENT_REMOVED, handleRemoved);
 
         return () => {
-            eventsRef.off(CHILD_ADDED, handleAdded);
-            eventsRef.off(CHILD_CHANGED, handleChanged);
-            eventsRef.off(CHILD_REMOVED, handleRemoved);
+            eventsRef.off(EVENT_ADDED, handleAdded);
+            eventsRef.off(EVENT_CHANGED, handleChanged);
+            eventsRef.off(EVENT_REMOVED, handleRemoved);
         };
     }
 
-    async function getEvent(id) {
-        const snapshot = await eventsRef.child(id).get();
+    function listenConfig(path, callback) {
+        const ref = configRef.child(path);
 
-        return snapshot.exists() ? snapshot.val() : null;
+        const handleValue = snapshot => {
+            callback(snapshot.val());
+        };
+
+        ref.on(VALUE, handleValue);
+
+        return () => {
+            ref.off(VALUE, handleValue);
+        };
     }
 
     async function addEvent(event) {
@@ -49,7 +59,7 @@ const Firebase = (() => {
 
     return {
         listenEvents,
-        getEvent,
+        listenConfig,
         addEvent,
         updateEvent,
         deleteEvent

@@ -1,8 +1,10 @@
 const Timer = (() => {
-    let timeoutId = null;
-    let intervalId = null;
+    const TICK_INTERVAL = 1000;
 
     const listeners = [];
+
+    let timeoutId = null;
+    let intervalId = null;
 
     function start() {
         if (timeoutId || intervalId) {
@@ -11,12 +13,12 @@ const Timer = (() => {
 
         tick();
 
-        const delay = 1000 - (Date.now() % 1000);
+        const delay = TICK_INTERVAL - (Date.now() % TICK_INTERVAL);
 
         timeoutId = setTimeout(() => {
             tick();
 
-            intervalId = setInterval(tick, 1000);
+            intervalId = setInterval(tick, TICK_INTERVAL);
             timeoutId = null;
         }, delay);
     }
@@ -34,6 +36,10 @@ const Timer = (() => {
     }
 
     function onTick(callback) {
+        if (typeof callback !== "function") {
+            throw new TypeError("Tick callback must be a function.");
+        }
+
         listeners.push(callback);
 
         return () => {

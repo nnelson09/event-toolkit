@@ -1,32 +1,29 @@
 :root {
-    /* Fondos */
+    /* Backgrounds */
     --bg: #121212;
     --bg-secondary: #1e1e1e;
     --bg-tertiary: #27272a;
 
-    /* Bordes */
+    /* Borders */
     --border: #3b3b3b;
     --border-light: #3f3f46;
     --border-dark: #2d2d2d;
 
-    /* Texto */
+    /* Text */
     --text: #e0e0e0;
     --text-secondary: #a1a1aa;
     --text-muted: #71717a;
     --text-inverse: #ffffff;
 
-    /* Color principal */
+    /* Primary color */
     --primary: #38bdf8;
     --primary-dark: #0284c7;
     --primary-hover: #0ea5e9;
 
-    /* Estados */
-    --success: #10b981;
-    --warning: #f59e0b;
+    /* States */
     --danger: #ef4444;
-    --danger-dark: #dc2626;
 
-    /* Tarjetas */
+    /* Cards */
     --card-bg: var(--bg-secondary);
     --card-border: var(--border);
 
@@ -34,28 +31,23 @@
     --input-bg: var(--bg-tertiary);
     --input-border: var(--border-light);
 
-    /* Botones */
+    /* Buttons */
     --button-bg: var(--primary-dark);
     --button-hover: var(--primary-hover);
 
-    /* Scroll */
+    /* Scrollbar */
     --scrollbar: var(--bg-tertiary);
 
-    /* Transiciones */
+    /* Transitions */
     --transition-fast: 0.12s;
     --transition: 0.18s;
-    --transition-slow: 0.3s;
 
-    /* Radios */
+    /* Radii */
     --radius-small: 4px;
     --radius: 6px;
     --radius-large: 8px;
 
-    /* Sombras */
-    --shadow-primary: 0 0 12px rgba(14, 165, 233, 0.35);
-    --shadow-danger: 0 0 8px rgba(239, 68, 68, 0.6);
-
-    /* Diálogos */
+    /* Dialogs */
     --dialog-overlay: rgba(0, 0, 0, 0.55);
     --dialog-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }

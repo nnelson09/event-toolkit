@@ -50,28 +50,31 @@
 }
 
 .dialog-toggle {
-    margin: 0;
+    width: 26px;
+    height: 26px;
     padding: 0;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
     background: transparent;
-    border: none;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
 
     color: var(--text-muted);
 
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 1;
-
     transition:
+        background var(--transition),
+        border-color var(--transition),
         color var(--transition),
         transform var(--transition-fast);
 }
 
 .dialog-toggle:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary);
     color: var(--primary);
 }
 
@@ -116,10 +119,7 @@
     border: 1px solid var(--border-light);
     border-radius: var(--radius-small);
 
-    color: var(--text);
-
-    font-size: 14px;
-    font-weight: 700;
+    color: var(--text-secondary);
 
     transition:
         background var(--transition),
@@ -128,22 +128,18 @@
         transform var(--transition-fast);
 }
 
-.dialog-button:hover {
-    background: var(--border-light);
-    border-color: var(--primary);
-    color: var(--text-inverse);
-}
-
 .dialog-button:active {
     transform: scale(0.95);
 }
 
 .dialog-button.accept:hover {
-    background: var(--success);
-    border-color: var(--success);
+    background: var(--button-bg);
+    border-color: var(--primary);
+    color: var(--text-inverse);
 }
 
 .dialog-button.cancel:hover {
     background: var(--danger);
     border-color: var(--danger);
+    color: var(--text-inverse);
 }

@@ -87,9 +87,6 @@
 
     color: var(--text-secondary);
 
-    font-size: 10px;
-    font-weight: 700;
-
     transition:
         background var(--transition),
         border-color var(--transition),
@@ -99,7 +96,7 @@
 .btn-action:hover {
     background: var(--border-light);
     border-color: var(--primary);
-    color: var(--text-inverse);
+    color: var(--primary);
 }
 
 .btn-del:hover {
