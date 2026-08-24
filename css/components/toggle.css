@@ -17,6 +17,10 @@
     transition: color var(--transition);
 }
 
+.toggle-tab[hidden] {
+    display: none;
+}
+
 .toggle-tab-shape {
     position: absolute;
     inset: 0;

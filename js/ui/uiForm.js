@@ -130,6 +130,8 @@ const UIForm = (() => {
 
         card.classList.add("collapsed", "hidden");
 
+        setAvailable(true);
+
         updateToggle();
         populateTargetDays();
     }
@@ -164,6 +166,14 @@ const UIForm = (() => {
         btnModeDuration.classList.toggle("active", isDuration);
 
         btnModeTarget.classList.toggle("active", !isDuration);
+    }
+
+    function setAvailable(available) {
+        if (typeof available !== "boolean") {
+            throw new TypeError("Form availability must be a boolean.");
+        }
+
+        btnToggle.hidden = !available;
     }
 
     function notifyCreate() {
@@ -283,6 +293,7 @@ const UIForm = (() => {
         clear,
         reset,
         getMode,
-        setMode
+        setMode,
+        setAvailable
     };
 })();

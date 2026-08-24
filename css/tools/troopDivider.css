@@ -39,6 +39,12 @@
     font-weight: 600;
 }
 
+.troop-divider-header-actions {
+    display: flex;
+
+    gap: 4px;
+}
+
 .troop-divider-close {
     width: 26px;
     height: 26px;
@@ -64,31 +70,167 @@
 
 .troop-divider-close:hover {
     background: var(--danger);
+
     border-color: var(--danger);
+
     color: var(--text-inverse);
+}
+
+#btnTroopDividerConfig:hover {
+    background: var(--bg-tertiary);
+
+    border-color: var(--primary);
+
+    color: var(--primary);
 }
 
 .troop-divider-close:active {
     transform: scale(0.95);
 }
 
-.troop-queues {
+.troop-divider-settings {
     margin-bottom: 8px;
+    padding: 6px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+}
+
+.troop-divider-setting-row {
+    margin-bottom: 5px;
 
     display: flex;
     align-items: center;
+
     gap: 6px;
 }
 
-.troop-queues-label {
+.troop-divider-setting-row:last-child {
+    margin-bottom: 0;
+}
+
+.troop-divider-setting-label {
+    min-width: 58px;
+
     color: var(--text-secondary);
 
-    font-size: 11px;
+    font-size: 10px;
+}
+
+.troop-profile {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.troop-queue-options {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
 }
 
 .troop-queues-select {
     width: 56px;
+
     padding: 0 4px;
+}
+
+.troop-own-option {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+    color: var(--text-secondary);
+
+    font-size: 10px;
+}
+
+.troop-own-option input {
+    width: auto;
+    height: auto;
+}
+
+.troop-hero-groups {
+    margin-bottom: 8px;
+    padding: 6px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+}
+
+.troop-hero-groups-header {
+    margin-bottom: 6px;
+    padding-bottom: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 6px;
+
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.troop-hero-groups-title {
+    margin: 0;
+
+    color: var(--section-title);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.troop-heroes-assigned {
+    color: var(--text-secondary);
+
+    font-family: Consolas, monospace;
+
+    font-size: 10px;
+}
+
+.troop-heroes-assigned.invalid {
+    color: var(--danger);
+}
+
+.troop-hero-group-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 4px;
+}
+
+.troop-hero-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    text-align: center;
+}
+
+.troop-hero-group label {
+    color: var(--text-muted);
+
+    font-size: 9px;
+}
+
+.troop-hero-group select {
+    width: 100%;
+
+    padding: 0 3px;
+
+    text-align: center;
+}
+
+.troop-hero-group select.invalid {
+    border-color: var(--danger);
 }
 
 .troop-form {
@@ -103,16 +245,19 @@
 
 .troop-form-row {
     display: flex;
+
     gap: 4px;
 }
 
 .troop-type {
     flex: 1.1;
+
     min-width: 0;
 }
 
 .troop-level {
     width: 84px;
+
     padding: 0 4px;
 
     text-align: center;
@@ -120,7 +265,9 @@
 
 .troop-amount {
     flex: 0.9;
+
     min-width: 0;
+
     padding: 0 4px;
 
     text-align: center;
@@ -139,6 +286,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     flex-shrink: 0;
 
     background: var(--bg-tertiary);
@@ -157,7 +305,9 @@
 
 .troop-add:hover {
     background: var(--button-bg);
+
     border-color: var(--primary);
+
     color: var(--text-inverse);
 }
 
@@ -165,75 +315,80 @@
     transform: scale(0.95);
 }
 
-.troop-summary {
-    margin-bottom: 8px;
+.troop-entered {
+    position: relative;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
+    margin-top: 9px;
+    padding-top: 9px;
 }
 
-.troop-summary-item {
-    padding: 6px;
-
-    background: var(--card-bg);
-
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-small);
-
-    text-align: center;
+.troop-entered[hidden] {
+    display: none;
 }
 
-.troop-summary-label {
-    margin-bottom: 3px;
+.troop-entered::before {
+    content: "";
 
-    color: var(--text-muted);
+    position: absolute;
+    top: 0;
+    left: 50%;
 
-    font-size: 9px;
-    text-transform: uppercase;
+    width: 94%;
+    height: 1px;
+
+    background: var(--border-dark);
+
+    transform: translateX(-50%);
 }
 
-.troop-summary-value {
-    color: var(--text);
-
-    font-family: Consolas, monospace;
-    font-size: 15px;
-    font-weight: 700;
-}
-
-.troop-results {
+.troop-entered-list {
     display: flex;
     flex-direction: column;
+
     gap: 4px;
 }
 
-.troop-result {
-    padding: 6px;
+.troop-entered-row {
+    padding: 4px 5px;
 
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 4px 8px;
+    grid-template-columns: minmax(0, 1fr) auto 22px;
+    align-items: center;
 
-    background: var(--card-bg);
+    gap: 6px;
 
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
+    background: var(--bg-tertiary);
+
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-small);
 }
 
-.troop-result-name {
+.troop-entered-name {
     min-width: 0;
 
-    color: var(--primary);
+    color: var(--text-secondary);
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
 
     overflow: hidden;
+
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.troop-result-delete {
+.troop-entered-amount {
+    color: var(--text);
+
+    font-family: Consolas, monospace;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+.troop-entered-delete {
     width: 22px;
     height: 22px;
     padding: 0;
@@ -242,83 +397,265 @@
     align-items: center;
     justify-content: center;
 
-    background: var(--bg-tertiary);
+    background: transparent;
 
-    border: 1px solid var(--border-light);
+    border: 1px solid transparent;
     border-radius: var(--radius-small);
 
-    color: var(--text-secondary);
+    color: var(--text-muted);
 
     transition:
         background var(--transition),
         border-color var(--transition),
-        color var(--transition);
+        color var(--transition),
+        transform var(--transition-fast);
 }
 
-.troop-result-delete:hover {
+.troop-entered-delete:hover {
     background: var(--danger);
+
     border-color: var(--danger);
+
     color: var(--text-inverse);
 }
 
-.troop-result-values {
-    grid-column: 1 / -1;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
+.troop-entered-delete:active {
+    transform: scale(0.95);
 }
 
-.troop-result-value {
+.troop-summary {
+    margin-bottom: 8px;
+    padding: 6px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+}
+
+.troop-summary-main {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 6px;
+}
+
+.troop-summary-metric {
+    min-width: 0;
+
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+
+    gap: 4px;
+
+    white-space: nowrap;
+}
+
+.troop-summary-metric-label {
+    color: var(--text-muted);
+
+    font-size: 8px;
+}
+
+.troop-summary-metric-value {
+    color: var(--text);
+
+    font-family: Consolas, monospace;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.troop-summary-metric.usage .troop-summary-metric-value {
+    color: var(--primary);
+}
+
+.troop-final-percentages {
     position: relative;
 
-    padding: 4px;
+    margin-top: 8px;
+    padding-top: 8px;
+
+    display: flex;
+    justify-content: space-around;
+
+    color: var(--primary);
+
+    font-family: Consolas, monospace;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.troop-final-percentages::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    width: 94%;
+    height: 1px;
+
+    background: var(--border-dark);
+
+    transform: translateX(-50%);
+}
+
+.troop-results {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.troop-formation-group {
+    overflow: hidden;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+}
+
+.troop-formation-group-header {
+    padding: 5px 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     background: var(--bg-tertiary);
 
-    border-radius: var(--radius-small);
-
-    text-align: center;
+    border-bottom: 1px solid var(--border-dark);
 }
 
-.troop-result-label {
-    display: block;
+.troop-formation-group-title {
+    color: var(--primary);
 
-    margin-bottom: 2px;
+    font-size: 10px;
+    font-weight: 600;
+}
 
+.troop-formation-group-capacity {
     color: var(--text-muted);
+
+    font-family: Consolas, monospace;
 
     font-size: 9px;
 }
 
-.troop-result-number {
-    width: 100%;
-    padding: 2px;
+/*
+ * One row per troop level:
+ *
+ * Lv. 10 | I 12,345 | C 12,345 | A 98,765
+ */
+
+.troop-level-row {
+    padding: 5px 6px;
+
+    display: grid;
+    grid-template-columns: 38px repeat(3, minmax(0, 1fr));
+    align-items: center;
+
+    gap: 4px;
+
+    border-top: 1px solid var(--border-dark);
+}
+
+.troop-level-row:first-of-type {
+    border-top: none;
+}
+
+.troop-level-row-level {
+    min-width: 0;
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.troop-level-value {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 3px 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    background: var(--bg-tertiary);
+
+    border-radius: var(--radius-small);
+}
+
+.troop-level-value.empty {
+    min-height: 24px;
 
     background: transparent;
+}
+
+.troop-level-type {
+    flex-shrink: 0;
+
+    color: var(--text-muted);
+
+    font-size: 7px;
+    font-weight: 600;
+}
+
+.troop-result-number {
+    min-width: 0;
+
+    padding: 1px;
+
+    background: transparent;
+
     border: none;
 
     color: var(--text);
 
     font-family: Consolas, monospace;
-    font-size: 13px;
+
+    font-size: 10px;
     font-weight: 700;
 
+    white-space: nowrap;
+
     cursor: pointer;
+
+    transition: color var(--transition);
 }
 
 .troop-result-number:hover {
     color: var(--primary);
 }
 
+.troop-result-number.copied {
+    color: var(--primary);
+}
+
 .troop-copy-feedback {
     position: absolute;
-    top: 2px;
-    right: 4px;
+
+    top: 1px;
+    right: 2px;
 
     color: var(--primary);
 
-    font-size: 8px;
+    font-size: 7px;
 
     opacity: 0;
 
@@ -337,5 +674,6 @@
     color: var(--text-muted);
 
     font-size: 11px;
+
     text-align: center;
 }

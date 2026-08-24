@@ -133,7 +133,8 @@ const Events = (() => {
 
         const normalizedEvent = {
             ...event,
-            interval: event.interval === undefined ? null : event.interval
+            interval: event.interval === undefined ? null : event.interval,
+            notes: event.notes === undefined ? {} : event.notes
         };
 
         Event.validate(normalizedEvent);

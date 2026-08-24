@@ -20,6 +20,9 @@
     --primary-dark: #0284c7;
     --primary-hover: #0ea5e9;
 
+    /* Section titles */
+    --section-title: #7dd3fc;
+
     /* States */
     --danger: #ef4444;
 

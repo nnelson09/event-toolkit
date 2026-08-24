@@ -32,6 +32,12 @@ const Firebase = (() => {
     }
 
     function listenConfig(path, callback) {
+        validateConfigPath(path);
+
+        if (typeof callback !== "function") {
+            throw new TypeError("Config callback must be a function.");
+        }
+
         const ref = configRef.child(path);
 
         const handleValue = snapshot => {
@@ -43,6 +49,12 @@ const Firebase = (() => {
         return () => {
             ref.off(VALUE, handleValue);
         };
+    }
+
+    async function setConfig(path, value) {
+        validateConfigPath(path);
+
+        await configRef.child(path).set(value);
     }
 
     async function addEvent(event) {
@@ -57,9 +69,16 @@ const Firebase = (() => {
         await eventsRef.child(id).remove();
     }
 
+    function validateConfigPath(path) {
+        if (typeof path !== "string" || path === "") {
+            throw new TypeError("Config path must be a non-empty string.");
+        }
+    }
+
     return {
         listenEvents,
         listenConfig,
+        setConfig,
         addEvent,
         updateEvent,
         deleteEvent

@@ -1,0 +1,87 @@
+.feedback-success,
+.feedback-danger,
+.feedback-danger-button {
+    --feedback-hold-duration: 1000ms;
+    --feedback-fade-duration: 2000ms;
+}
+
+.feedback-success {
+    animation:
+        feedbackSuccessHold var(--feedback-hold-duration) linear both,
+        feedbackSuccessFade var(--feedback-fade-duration) ease-out var(--feedback-hold-duration) both;
+}
+
+.feedback-danger {
+    animation:
+        feedbackDangerHold var(--feedback-hold-duration) linear both,
+        feedbackDangerFade var(--feedback-fade-duration) ease-out var(--feedback-hold-duration) both;
+}
+
+.feedback-danger-button {
+    animation:
+        feedbackDangerButtonHold var(--feedback-hold-duration) linear both,
+        feedbackDangerButtonFade var(--feedback-fade-duration) ease-out var(--feedback-hold-duration) both;
+}
+
+.feedback-danger-button:hover {
+    background: var(--danger) !important;
+    border-color: var(--danger) !important;
+    color: var(--text-inverse) !important;
+}
+
+@keyframes feedbackSuccessHold {
+    from,
+    to {
+        border-color: var(--primary);
+    }
+}
+
+@keyframes feedbackSuccessFade {
+    from {
+        border-color: var(--primary);
+    }
+
+    to {
+        border-color: var(--card-border);
+    }
+}
+
+@keyframes feedbackDangerHold {
+    from,
+    to {
+        border-color: var(--danger);
+    }
+}
+
+@keyframes feedbackDangerFade {
+    from {
+        border-color: var(--danger);
+    }
+
+    to {
+        border-color: var(--card-border);
+    }
+}
+
+@keyframes feedbackDangerButtonHold {
+    from,
+    to {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: var(--text-inverse);
+    }
+}
+
+@keyframes feedbackDangerButtonFade {
+    from {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: var(--text-inverse);
+    }
+
+    to {
+        background: var(--bg-tertiary);
+        border-color: var(--border-light);
+        color: var(--text-secondary);
+    }
+}

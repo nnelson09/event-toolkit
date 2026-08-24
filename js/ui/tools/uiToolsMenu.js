@@ -1,12 +1,15 @@
 const UIToolsMenu = (() => {
     let open = false;
+
     let troopDividerCallback = null;
     let eternitysReachCallback = null;
+    let resourceBalanceCallback = null;
 
     let menu;
     let btnToggle;
     let btnTroopDivider;
     let btnEternitysReach;
+    let btnResourceBalance;
 
     function start() {
         cacheDOM();
@@ -16,9 +19,14 @@ const UIToolsMenu = (() => {
 
     function cacheDOM() {
         menu = document.getElementById("toolsMenu");
+
         btnToggle = document.getElementById("btnToolsMenu");
+
         btnTroopDivider = document.getElementById("btnTroopDivider");
+
         btnEternitysReach = document.getElementById("btnEternitysReach");
+
+        btnResourceBalance = document.getElementById("btnResourceBalance");
     }
 
     function bindEvents() {
@@ -32,23 +40,29 @@ const UIToolsMenu = (() => {
             selectTool(eternitysReachCallback);
         });
 
+        btnResourceBalance.addEventListener("click", () => {
+            selectTool(resourceBalanceCallback);
+        });
+
         document.addEventListener("click", handleOutsideClick);
     }
 
     function onTroopDivider(callback) {
-        if (typeof callback !== "function") {
-            throw new TypeError("Troop Divider callback must be a function.");
-        }
+        validateCallback(callback, "Troop Divider");
 
         troopDividerCallback = callback;
     }
 
     function onEternitysReach(callback) {
-        if (typeof callback !== "function") {
-            throw new TypeError("Eternity's Reach callback must be a function.");
-        }
+        validateCallback(callback, "Eternity's Reach");
 
         eternitysReachCallback = callback;
+    }
+
+    function onResourceBalance(callback) {
+        validateCallback(callback, "Resource Balance");
+
+        resourceBalanceCallback = callback;
     }
 
     function toggle(event) {
@@ -95,10 +109,17 @@ const UIToolsMenu = (() => {
         UIToggle.render(btnToggle, open ? Icons.DOWN : Icons.UP, open ? "Hide tools" : "Show tools");
     }
 
+    function validateCallback(callback, name) {
+        if (typeof callback !== "function") {
+            throw new TypeError(`${name} callback must be a function.`);
+        }
+    }
+
     return {
         start,
         onTroopDivider,
         onEternitysReach,
+        onResourceBalance,
         close
     };
 })();

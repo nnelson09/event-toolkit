@@ -1,0 +1,252 @@
+.resource-balance {
+    position: fixed;
+    inset: 6px 4px 24px;
+    z-index: 850;
+
+    padding: 8px;
+
+    overflow-y: auto;
+
+    background: var(--bg);
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--dialog-shadow);
+}
+
+.resource-balance[hidden] {
+    display: none;
+}
+
+.resource-balance-header {
+    padding-bottom: 6px;
+
+    display: flex;
+    align-items: center;
+
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.resource-balance-title {
+    flex: 1;
+
+    margin: 0;
+
+    color: var(--primary);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.resource-balance-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.resource-balance-clear,
+.resource-balance-close {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--bg-tertiary);
+
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-small);
+
+    color: var(--text-secondary);
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        transform var(--transition-fast);
+}
+
+.resource-balance-clear:hover,
+.resource-balance-close:hover {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: var(--text-inverse);
+}
+
+.resource-balance-clear:active,
+.resource-balance-close:active {
+    transform: scale(0.95);
+}
+
+.resource-balance-content {
+    width: 100%;
+
+    padding-top: 12px;
+}
+
+.resource-balance-form {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto repeat(4, 28px);
+    column-gap: 8px;
+    row-gap: 5px;
+    align-items: center;
+}
+
+.resource-balance-current-title {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.resource-balance-items-title {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.resource-balance-column-title {
+    color: var(--text-muted);
+
+    font-size: 9px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.resource-balance-input-label {
+    grid-column: 1;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+.resource-balance-input-label.bread {
+    grid-row: 2;
+}
+
+.resource-balance-input-label.wood {
+    grid-row: 3;
+}
+
+.resource-balance-input-label.stone {
+    grid-row: 4;
+}
+
+.resource-balance-input-label.iron {
+    grid-row: 5;
+}
+
+.resource-balance-input {
+    width: 100%;
+    min-width: 0;
+    padding: 0 4px;
+
+    text-align: center;
+}
+
+.resource-balance-input.invalid {
+    border-color: var(--danger);
+}
+
+.resource-balance-input.current {
+    grid-column: 2;
+}
+
+.resource-balance-input.items {
+    grid-column: 3;
+}
+
+.resource-balance-input.bread {
+    grid-row: 2;
+}
+
+.resource-balance-input.wood {
+    grid-row: 3;
+}
+
+.resource-balance-input.stone {
+    grid-row: 4;
+}
+
+.resource-balance-input.iron {
+    grid-row: 5;
+}
+
+.resource-balance-results {
+    margin-top: 14px;
+
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+
+    overflow: hidden;
+}
+
+.resource-balance-results-header,
+.resource-balance-result {
+    display: grid;
+    grid-template-columns: 1fr 60px 92px;
+    align-items: center;
+}
+
+.resource-balance-results-header {
+    min-height: 24px;
+    padding: 4px 7px;
+
+    background: var(--bg-tertiary);
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+.resource-balance-results-header span:nth-child(2) {
+    text-align: center;
+}
+
+.resource-balance-results-header span:nth-child(3) {
+    text-align: right;
+}
+
+.resource-balance-result {
+    min-height: 32px;
+    padding: 5px 7px;
+
+    background: var(--card-bg);
+
+    border-top: 1px solid var(--border-dark);
+}
+
+.resource-balance-result.priority {
+    background: var(--bg-tertiary);
+}
+
+.resource-balance-result-name {
+    color: var(--text-secondary);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.resource-balance-result-percentage {
+    color: var(--text);
+
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.resource-balance-result.priority .resource-balance-result-percentage {
+    color: var(--primary);
+}
+
+.resource-balance-result-missing {
+    color: var(--text-muted);
+
+    font-family: Consolas, monospace;
+    font-size: 11px;
+    text-align: right;
+}

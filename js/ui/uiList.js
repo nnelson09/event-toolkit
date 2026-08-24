@@ -4,6 +4,7 @@ const UIList = (() => {
     let container;
     let deleteCallback = null;
     let adjustCallback = null;
+    let openCallback = null;
 
     function start() {
         cacheDOM();
@@ -32,6 +33,14 @@ const UIList = (() => {
         }
 
         adjustCallback = callback;
+    }
+
+    function onOpen(callback) {
+        if (typeof callback !== "function") {
+            throw new TypeError("Open callback must be a function.");
+        }
+
+        openCallback = callback;
     }
 
     function render(events) {
@@ -91,17 +100,22 @@ const UIList = (() => {
 
         row.appendChild(info);
 
-        const title = document.createElement("div");
+        const title = document.createElement("button");
 
+        title.type = "button";
         title.className = "event-title";
         title.textContent = event.name || "Event";
+        title.title = "Open event";
+
+        title.addEventListener("click", () => {
+            notifyOpen(event.id);
+        });
 
         info.appendChild(title);
 
         const display = document.createElement("div");
 
         display.className = "event-display";
-
         display.textContent = Time.format(Time.remaining(event.targetTime));
 
         info.appendChild(display);
@@ -111,13 +125,33 @@ const UIList = (() => {
             targetTime: event.targetTime
         });
 
+        const subRow = document.createElement("div");
+
+        subRow.className = "event-sub-row";
+
+        info.appendChild(subRow);
+
         const target = document.createElement("div");
 
         target.className = "event-sub";
-
         target.textContent = Time.formatTarget(event.targetTime);
 
-        info.appendChild(target);
+        subRow.appendChild(target);
+
+        if (Object.keys(event.notes).length > 0) {
+            const noteIndicator = document.createElement("button");
+
+            noteIndicator.type = "button";
+            noteIndicator.className = "event-note-indicator";
+            noteIndicator.title = "View notes";
+            noteIndicator.setAttribute("aria-label", "View notes");
+
+            noteIndicator.addEventListener("click", () => {
+                notifyOpen(event.id);
+            });
+
+            subRow.appendChild(noteIndicator);
+        }
 
         const actions = document.createElement("div");
 
@@ -160,10 +194,17 @@ const UIList = (() => {
         return card;
     }
 
+    function notifyOpen(id) {
+        if (openCallback) {
+            openCallback(id);
+        }
+    }
+
     return {
         start,
         onDelete,
         onAdjust,
+        onOpen,
         render,
         update,
         clear

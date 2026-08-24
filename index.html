@@ -18,14 +18,18 @@
         <link rel="stylesheet" href="css/components/cards.css" />
         <link rel="stylesheet" href="css/components/dialogs.css" />
         <link rel="stylesheet" href="css/components/auth.css" />
+        <link rel="stylesheet" href="css/components/feedback.css" />
 
         <!-- Events -->
         <link rel="stylesheet" href="css/events/form.css" />
+        <link rel="stylesheet" href="css/events/event.css" />
 
         <!-- Tools -->
         <link rel="stylesheet" href="css/tools/toolsMenu.css" />
         <link rel="stylesheet" href="css/tools/troopDivider.css" />
+        <link rel="stylesheet" href="css/tools/troopDividerConfig.css" />
         <link rel="stylesheet" href="css/tools/eternitysReach.css" />
+        <link rel="stylesheet" href="css/tools/resourceBalance.css" />
 
         <!-- Firebase -->
         <script src="https://www.gstatic.com/firebasejs/12.17.0/firebase-app-compat.js"></script>
@@ -44,14 +48,15 @@
         <script src="js/core/time.js" defer></script>
 
         <!-- Events -->
+        <script src="js/events/note.js" defer></script>
         <script src="js/events/event.js" defer></script>
         <script src="js/events/eventFactory.js" defer></script>
         <script src="js/events/events.js" defer></script>
+        <script src="js/events/eventNotes.js" defer></script>
 
         <!-- Tools -->
         <script src="js/tools/troopDivider.js" defer></script>
-        <script src="js/tools/uiTroopDivider.js" defer></script>
-        <script src="js/tools/uiEternitysReach.js" defer></script>
+        <script src="js/tools/resourceBalance.js" defer></script>
 
         <!-- UI -->
         <script src="js/ui/icons.js" defer></script>
@@ -59,9 +64,18 @@
         <script src="js/ui/uiForm.js" defer></script>
         <script src="js/ui/uiList.js" defer></script>
         <script src="js/ui/uiDialogs.js" defer></script>
+        <script src="js/ui/uiEvent.js" defer></script>
         <script src="js/ui/uiNotifications.js" defer></script>
         <script src="js/ui/uiAuth.js" defer></script>
-        <script src="js/ui/uiToolsMenu.js" defer></script>
+
+        <!-- Tool UI -->
+        <script src="js/ui/tools/uiToolsMenu.js" defer></script>
+        <script src="js/ui/tools/uiTroopDivider.js" defer></script>
+        <script src="js/ui/tools/uiTroopDividerConfig.js" defer></script>
+        <script src="js/ui/tools/uiEternitysReach.js" defer></script>
+        <script src="js/ui/tools/uiResourceBalance.js" defer></script>
+
+        <!-- UI Coordinator -->
         <script src="js/ui/ui.js" defer></script>
 
         <!-- Services -->
@@ -138,24 +152,116 @@
                 </div>
             </div>
 
+            <div id="eventDialog" class="dialog-overlay" hidden>
+                <div class="dialog event-dialog">
+                    <div class="dialog-header">
+                        <h2 class="dialog-title">Event</h2>
+
+                        <button id="btnEventClose" class="event-dialog-close" type="button" title="Close"></button>
+                    </div>
+
+                    <div class="event-dialog-section">
+                        <div class="event-dialog-section-header">
+                            <span class="event-dialog-label">Name</span>
+
+                            <button id="btnEventEditName" class="event-dialog-edit" type="button" title="Edit name"></button>
+                        </div>
+
+                        <div id="eventNameValue" class="event-dialog-value"></div>
+                    </div>
+
+                    <div class="event-dialog-section">
+                        <div class="event-dialog-section-header">
+                            <span class="event-dialog-label">Notes</span>
+
+                            <button id="btnEventEditNotes" class="event-dialog-edit" type="button" title="Edit notes"></button>
+                        </div>
+
+                        <div id="eventNotesValue" class="event-dialog-value event-dialog-notes"></div>
+                    </div>
+                </div>
+            </div>
+
             <div id="troopDivider" class="troop-divider" hidden>
                 <div class="troop-divider-header">
                     <h2 class="troop-divider-title">Troop Divider</h2>
 
-                    <button id="btnTroopDividerClose" class="troop-divider-close" type="button" title="Close"></button>
+                    <div class="troop-divider-header-actions">
+                        <button id="btnTroopDividerConfig" class="troop-divider-close" type="button" title="Settings"></button>
+
+                        <button id="btnTroopDividerClose" class="troop-divider-close" type="button" title="Close"></button>
+                    </div>
                 </div>
 
-                <div class="troop-queues">
-                    <span class="troop-queues-label">Queues</span>
+                <div class="troop-divider-settings">
+                    <div class="troop-divider-setting-row">
+                        <span class="troop-divider-setting-label">Profile</span>
 
-                    <select id="troopQueues" class="troop-queues-select">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6" selected>6</option>
-                    </select>
+                        <select id="troopProfile" class="troop-profile"></select>
+                    </div>
+
+                    <div class="troop-divider-setting-row">
+                        <span class="troop-divider-setting-label">Queues</span>
+
+                        <div class="troop-queue-options">
+                            <select id="troopQueues" class="troop-queues-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+
+                            <label class="troop-own-option">
+                                <input id="troopOwnQueue" type="checkbox" />
+
+                                Own
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="troop-hero-groups">
+                    <div class="troop-hero-groups-header">
+                        <span class="troop-hero-groups-title">Queue heroes</span>
+
+                        <span id="troopHeroesAssigned" class="troop-heroes-assigned">0/0</span>
+                    </div>
+
+                    <div class="troop-hero-group-grid">
+                        <div class="troop-hero-group">
+                            <label for="troopHeroes3">3 Heroes</label>
+
+                            <select id="troopHeroes3">
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+
+                        <div class="troop-hero-group">
+                            <label for="troopHeroes2">2 Heroes</label>
+
+                            <select id="troopHeroes2">
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+
+                        <div class="troop-hero-group">
+                            <label for="troopHeroes1">1 Hero</label>
+
+                            <select id="troopHeroes1">
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+
+                        <div class="troop-hero-group">
+                            <label for="troopHeroes0">0 Heroes</label>
+
+                            <select id="troopHeroes0">
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="troop-form">
@@ -172,21 +278,191 @@
 
                         <button id="btnTroopAdd" class="troop-add" type="button" title="Add troops"></button>
                     </div>
+
+                    <div id="troopEntered" class="troop-entered" hidden>
+                        <div id="troopEnteredList" class="troop-entered-list"></div>
+                    </div>
                 </div>
 
                 <div class="troop-summary">
-                    <div class="troop-summary-item">
-                        <div class="troop-summary-label">Queue 1</div>
-                        <div id="troopTotalFirst" class="troop-summary-value">0</div>
+                    <div class="troop-summary-main">
+                        <div class="troop-summary-metric">
+                            <span class="troop-summary-metric-label">Capacity</span>
+
+                            <span id="troopSummaryCapacity" class="troop-summary-metric-value">—</span>
+                        </div>
+
+                        <div class="troop-summary-metric">
+                            <span class="troop-summary-metric-label">Used</span>
+
+                            <span id="troopSummaryUsed" class="troop-summary-metric-value">—</span>
+                        </div>
+
+                        <div class="troop-summary-metric usage">
+                            <span class="troop-summary-metric-label">Usage</span>
+
+                            <span id="troopSummaryUsagePercentage" class="troop-summary-metric-value">—</span>
+                        </div>
                     </div>
 
-                    <div class="troop-summary-item">
-                        <div id="troopTotalOthersLabel" class="troop-summary-label">Each Q2–Q6</div>
-                        <div id="troopTotalOthers" class="troop-summary-value">0</div>
-                    </div>
+                    <div id="troopFinalPercentages" class="troop-final-percentages">—</div>
                 </div>
 
                 <div id="troopResults" class="troop-results"></div>
+            </div>
+
+            <div id="troopDividerConfig" class="troop-divider-config" hidden>
+                <div class="troop-divider-config-header">
+                    <h2 class="troop-divider-config-title">Troop Divider Settings</h2>
+
+                    <button id="btnTroopDividerConfigClose" class="troop-divider-config-close" type="button" title="Close"></button>
+                </div>
+
+                <div id="troopLevelsConfigSection" class="troop-divider-config-section">
+                    <div class="troop-divider-config-section-header">
+                        <div class="troop-divider-config-section-title">Troop Levels</div>
+                    </div>
+
+                    <div class="troop-level-config-add">
+                        <input id="troopConfigLevel" type="text" inputmode="numeric" autocomplete="off" placeholder="Level" />
+
+                        <button id="btnTroopConfigLevelAdd" class="troop-divider-config-action add" type="button" title="Add level"></button>
+                    </div>
+
+                    <div id="troopConfigLevelListContainer" class="troop-level-config-list-container" hidden>
+                        <div id="troopConfigLevelList" class="troop-level-config-list"></div>
+                    </div>
+
+                    <div class="troop-level-config-default">
+                        <label for="troopConfigDefaultLevel">Default</label>
+
+                        <select id="troopConfigDefaultLevel"></select>
+                    </div>
+                </div>
+
+                <div id="troopProfilesConfigSection" class="troop-divider-config-section">
+                    <div class="troop-divider-config-section-header">
+                        <div class="troop-divider-config-section-title">Profiles</div>
+
+                        <button id="btnTroopConfigProfileSave" class="troop-divider-config-action save" type="button" title="Save profile"></button>
+                    </div>
+
+                    <div class="troop-divider-config-profile-row">
+                        <select id="troopConfigProfile" class="troop-divider-config-profile-select"></select>
+
+                        <div class="troop-divider-config-profile-buttons">
+                            <button id="btnTroopConfigProfileAdd" class="troop-divider-config-action add" type="button" title="New profile"></button>
+
+                            <button id="btnTroopConfigProfileDelete" class="troop-divider-config-action delete" type="button" title="Delete profile"></button>
+                        </div>
+                    </div>
+
+                    <div class="troop-divider-config-row">
+                        <label class="troop-divider-config-label" for="troopConfigProfileName"> Name </label>
+
+                        <input id="troopConfigProfileName" type="text" autocomplete="off" />
+                    </div>
+
+                    <div class="troop-divider-config-row">
+                        <label class="troop-divider-config-label" for="troopConfigQueues"> Queues </label>
+
+                        <div class="troop-divider-config-queue-options">
+                            <select id="troopConfigQueues">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+
+                            <label class="troop-divider-config-own">
+                                <input id="troopConfigOwnQueue" type="checkbox" />
+                                Own queue
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="troop-divider-config-subtitle">Capacity</div>
+
+                    <div class="troop-divider-config-row">
+                        <label class="troop-divider-config-label" for="troopCapacityBase"> Base </label>
+
+                        <input id="troopCapacityBase" type="text" inputmode="numeric" autocomplete="off" placeholder="0" />
+                    </div>
+
+                    <div class="troop-divider-config-row">
+                        <label class="troop-divider-config-label" for="troopCapacityPerHero"> Per Hero </label>
+
+                        <input id="troopCapacityPerHero" type="text" inputmode="numeric" autocomplete="off" placeholder="0" />
+                    </div>
+
+                    <div class="troop-divider-config-row">
+                        <label class="troop-divider-config-label" for="troopConfigExtra"> Extra </label>
+
+                        <input id="troopConfigExtra" type="text" inputmode="numeric" autocomplete="off" placeholder="0" />
+                    </div>
+
+                    <div class="troop-divider-config-subtitle">
+                        <span>Percentages</span>
+
+                        <span id="troopConfigPercentageTotal" class="troop-divider-config-percentage-total"> Total 0% </span>
+                    </div>
+
+                    <div class="troop-divider-config-percentages">
+                        <div class="troop-divider-config-field">
+                            <label for="troopConfigInfantry">Infantry</label>
+
+                            <input id="troopConfigInfantry" type="number" min="0" max="100" />
+                        </div>
+
+                        <div class="troop-divider-config-field">
+                            <label for="troopConfigCavalry">Cavalry</label>
+
+                            <input id="troopConfigCavalry" type="number" min="0" max="100" />
+                        </div>
+
+                        <div class="troop-divider-config-field">
+                            <label for="troopConfigArcher">Archers</label>
+
+                            <input id="troopConfigArcher" type="number" min="0" max="100" />
+                        </div>
+                    </div>
+
+                    <div class="troop-divider-config-subtitle">Priority</div>
+
+                    <div class="troop-divider-config-priority">
+                        <div class="troop-divider-config-field">
+                            <label for="troopConfigPriority1">1st</label>
+
+                            <select id="troopConfigPriority1">
+                                <option value="infantry">Infantry</option>
+                                <option value="cavalry">Cavalry</option>
+                                <option value="archer">Archers</option>
+                            </select>
+                        </div>
+
+                        <div class="troop-divider-config-field">
+                            <label for="troopConfigPriority2">2nd</label>
+
+                            <select id="troopConfigPriority2">
+                                <option value="infantry">Infantry</option>
+                                <option value="cavalry">Cavalry</option>
+                                <option value="archer">Archers</option>
+                            </select>
+                        </div>
+
+                        <div class="troop-divider-config-field">
+                            <label for="troopConfigPriority3">3rd</label>
+
+                            <select id="troopConfigPriority3">
+                                <option value="infantry">Infantry</option>
+                                <option value="cavalry">Cavalry</option>
+                                <option value="archer">Archers</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="eternitysReach" class="eternitys-reach" hidden>
@@ -201,7 +477,84 @@
 
                     <div class="eternitys-reach-actions">
                         <button id="btnEternitysReachStart" class="eternitys-reach-button" type="button">Start</button>
+
                         <button id="btnEternitysReachReset" class="eternitys-reach-button" type="button">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resourceBalance" class="resource-balance" hidden>
+                <div class="resource-balance-header">
+                    <h2 class="resource-balance-title">Resource Balance</h2>
+
+                    <div class="resource-balance-header-actions">
+                        <button id="btnResourceBalanceClear" class="resource-balance-clear" type="button" title="Clear"></button>
+
+                        <button id="btnResourceBalanceClose" class="resource-balance-close" type="button" title="Close"></button>
+                    </div>
+                </div>
+
+                <div class="resource-balance-content">
+                    <div class="resource-balance-form">
+                        <span class="resource-balance-column-title resource-balance-current-title"> Current </span>
+
+                        <span class="resource-balance-column-title resource-balance-items-title"> Items </span>
+
+                        <label class="resource-balance-input-label bread" for="resourceBalance-bread"> Bread </label>
+
+                        <label class="resource-balance-input-label wood" for="resourceBalance-wood"> Wood </label>
+
+                        <label class="resource-balance-input-label stone" for="resourceBalance-stone"> Stone </label>
+
+                        <label class="resource-balance-input-label iron" for="resourceBalance-iron"> Iron </label>
+
+                        <input id="resourceBalance-bread" class="resource-balance-input current bread" type="text" inputmode="decimal" autocomplete="off" placeholder="0" />
+
+                        <input id="resourceBalance-wood" class="resource-balance-input current wood" type="text" inputmode="decimal" autocomplete="off" placeholder="0" />
+
+                        <input id="resourceBalance-stone" class="resource-balance-input current stone" type="text" inputmode="decimal" autocomplete="off" placeholder="0" />
+
+                        <input id="resourceBalance-iron" class="resource-balance-input current iron" type="text" inputmode="decimal" autocomplete="off" placeholder="0" />
+
+                        <input id="resourceBalance-bread-items" class="resource-balance-input items bread" type="text" inputmode="decimal" autocomplete="off" placeholder="Optional" />
+
+                        <input id="resourceBalance-wood-items" class="resource-balance-input items wood" type="text" inputmode="decimal" autocomplete="off" placeholder="Optional" />
+
+                        <input id="resourceBalance-stone-items" class="resource-balance-input items stone" type="text" inputmode="decimal" autocomplete="off" placeholder="Optional" />
+
+                        <input id="resourceBalance-iron-items" class="resource-balance-input items iron" type="text" inputmode="decimal" autocomplete="off" placeholder="Optional" />
+                    </div>
+
+                    <div class="resource-balance-results">
+                        <div class="resource-balance-results-header">
+                            <span>Resource</span>
+                            <span>Balance</span>
+                            <span>Missing</span>
+                        </div>
+
+                        <div id="resourceBalance-bread-result" class="resource-balance-result">
+                            <div class="resource-balance-result-name">Bread</div>
+                            <div id="resourceBalance-bread-percentage" class="resource-balance-result-percentage">—</div>
+                            <div id="resourceBalance-bread-missing" class="resource-balance-result-missing">—</div>
+                        </div>
+
+                        <div id="resourceBalance-wood-result" class="resource-balance-result">
+                            <div class="resource-balance-result-name">Wood</div>
+                            <div id="resourceBalance-wood-percentage" class="resource-balance-result-percentage">—</div>
+                            <div id="resourceBalance-wood-missing" class="resource-balance-result-missing">—</div>
+                        </div>
+
+                        <div id="resourceBalance-stone-result" class="resource-balance-result">
+                            <div class="resource-balance-result-name">Stone</div>
+                            <div id="resourceBalance-stone-percentage" class="resource-balance-result-percentage">—</div>
+                            <div id="resourceBalance-stone-missing" class="resource-balance-result-missing">—</div>
+                        </div>
+
+                        <div id="resourceBalance-iron-result" class="resource-balance-result">
+                            <div class="resource-balance-result-name">Iron</div>
+                            <div id="resourceBalance-iron-percentage" class="resource-balance-result-percentage">—</div>
+                            <div id="resourceBalance-iron-missing" class="resource-balance-result-missing">—</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -213,6 +566,8 @@
                     <button id="btnTroopDivider" class="tools-menu-item" type="button">Troop Divider</button>
 
                     <button id="btnEternitysReach" class="tools-menu-item" type="button">Eternity's Reach</button>
+
+                    <button id="btnResourceBalance" class="tools-menu-item" type="button">Resource Balance</button>
                 </div>
 
                 <button id="btnToolsMenu" class="toggle-tab tools-menu-toggle" type="button" title="Show tools" aria-expanded="false"></button>
