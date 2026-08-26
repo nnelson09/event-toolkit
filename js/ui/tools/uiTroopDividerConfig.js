@@ -10,20 +10,15 @@ const UITroopDividerConfig = (() => {
     let deletePending = false;
     let deleteInProgress = false;
 
-    let levels = [];
     let defaultLevel = null;
 
     let container;
 
-    let levelsSection;
+    let defaultLevelSection;
     let profileSection;
 
     let btnClose;
 
-    let inputLevel;
-    let btnAddLevel;
-    let levelListContainer;
-    let levelList;
     let defaultLevelSelect;
 
     let profileSelect;
@@ -53,65 +48,59 @@ const UITroopDividerConfig = (() => {
         bindEvents();
         renderIcons();
 
-        renderLevels(Config.getTroopLevels());
         renderDefaultLevel(Config.getDefaultTroopLevel());
+
         renderProfiles(Config.getTroopDividerProfiles());
     }
 
     function cacheDOM() {
         container = document.getElementById("troopDividerConfig");
 
-        levelsSection = document.getElementById("troopLevelsConfigSection");
+        defaultLevelSection = document.getElementById("troopLevelsConfigSection");
+
         profileSection = document.getElementById("troopProfilesConfigSection");
 
         btnClose = document.getElementById("btnTroopDividerConfigClose");
-
-        inputLevel = document.getElementById("troopConfigLevel");
-        btnAddLevel = document.getElementById("btnTroopConfigLevelAdd");
-
-        levelListContainer = document.getElementById("troopConfigLevelListContainer");
-        levelList = document.getElementById("troopConfigLevelList");
 
         defaultLevelSelect = document.getElementById("troopConfigDefaultLevel");
 
         profileSelect = document.getElementById("troopConfigProfile");
 
         btnAddProfile = document.getElementById("btnTroopConfigProfileAdd");
+
         btnDeleteProfile = document.getElementById("btnTroopConfigProfileDelete");
+
         btnSaveProfile = document.getElementById("btnTroopConfigProfileSave");
 
         inputProfileName = document.getElementById("troopConfigProfileName");
 
         inputQueues = document.getElementById("troopConfigQueues");
+
         inputOwnQueue = document.getElementById("troopConfigOwnQueue");
 
         inputBaseCapacity = document.getElementById("troopCapacityBase");
+
         inputPerHeroCapacity = document.getElementById("troopCapacityPerHero");
+
         inputExtra = document.getElementById("troopConfigExtra");
 
         inputInfantry = document.getElementById("troopConfigInfantry");
+
         inputCavalry = document.getElementById("troopConfigCavalry");
+
         inputArcher = document.getElementById("troopConfigArcher");
 
         percentageTotal = document.getElementById("troopConfigPercentageTotal");
 
         priority1 = document.getElementById("troopConfigPriority1");
+
         priority2 = document.getElementById("troopConfigPriority2");
+
         priority3 = document.getElementById("troopConfigPriority3");
     }
 
     function bindEvents() {
         btnClose.addEventListener("click", close);
-
-        btnAddLevel.addEventListener("click", addLevel);
-
-        inputLevel.addEventListener("input", handleLevelInput);
-
-        inputLevel.addEventListener("keydown", event => {
-            if (event.key === "Enter") {
-                addLevel();
-            }
-        });
 
         defaultLevelSelect.addEventListener("change", saveDefaultLevel);
 
@@ -135,10 +124,9 @@ const UITroopDividerConfig = (() => {
         priority2.addEventListener("change", renderPriorityState);
         priority3.addEventListener("change", renderPriorityState);
 
-        levelsSection.addEventListener("animationend", handleLevelsAnimationEnd);
-        profileSection.addEventListener("animationend", handleProfileAnimationEnd);
+        defaultLevelSection.addEventListener("animationend", handleDefaultLevelAnimationEnd);
 
-        Config.onTroopLevelsChanged(renderLevels);
+        profileSection.addEventListener("animationend", handleProfileAnimationEnd);
 
         Config.onDefaultTroopLevelChanged(renderDefaultLevel);
 
@@ -147,8 +135,6 @@ const UITroopDividerConfig = (() => {
 
     function renderIcons() {
         btnClose.replaceChildren(Icons.create(Icons.CANCEL));
-
-        btnAddLevel.replaceChildren(Icons.create(Icons.ADD));
 
         btnAddProfile.replaceChildren(Icons.create(Icons.ADD));
 
@@ -168,8 +154,8 @@ const UITroopDividerConfig = (() => {
     function open() {
         cancelDeleteConfirmation();
 
-        renderLevels(Config.getTroopLevels());
         renderDefaultLevel(Config.getDefaultTroopLevel());
+
         renderProfiles(Config.getTroopDividerProfiles());
 
         container.hidden = false;
@@ -209,135 +195,16 @@ const UITroopDividerConfig = (() => {
         input.value = formatNumber(Number(digits));
     }
 
-    function handleLevelInput() {
-        inputLevel.classList.remove("invalid");
-
-        inputLevel.value = getDigits(inputLevel.value);
-    }
-
-    async function addLevel() {
-        try {
-            const digits = getDigits(inputLevel.value);
-
-            if (digits === "") {
-                inputLevel.classList.add("invalid");
-
-                return;
-            }
-
-            const value = String(Number(digits));
-
-            if (levels.some(level => level.value === value)) {
-                inputLevel.classList.add("invalid");
-
-                return;
-            }
-
-            await Config.addTroopLevel(value);
-
-            inputLevel.value = "";
-
-            inputLevel.classList.remove("invalid");
-
-            showSuccess(levelsSection);
-        } catch (error) {
-            ErrorHandler.handle(error, "Adding troop level");
-        }
-    }
-
-    async function removeLevel(value) {
-        try {
-            await Config.removeTroopLevel(value);
-
-            showSuccess(levelsSection);
-        } catch (error) {
-            ErrorHandler.handle(error, "Removing troop level");
-        }
-    }
-
-    function renderLevels(newLevels) {
-        if (!Array.isArray(newLevels)) {
-            throw new TypeError("Troop levels must be an array.");
-        }
-
-        levels = [...newLevels].sort((a, b) => {
-            return Number(a.value) - Number(b.value);
-        });
-
-        levelList.replaceChildren();
-
-        if (levels.length === 0) {
-            levelListContainer.hidden = true;
-
-            renderDefaultLevelOptions();
-
-            return;
-        }
-
-        levelListContainer.hidden = false;
-
-        levels.forEach(level => {
-            levelList.appendChild(createLevelRow(level));
-        });
-
-        renderDefaultLevelOptions();
-    }
-
-    function createLevelRow(level) {
-        const row = document.createElement("div");
-
-        row.className = "troop-level-config-row";
-
-        const label = document.createElement("span");
-
-        label.className = "troop-level-config-label";
-
-        label.textContent = level.label;
-
-        const btnDelete = document.createElement("button");
-
-        btnDelete.type = "button";
-
-        btnDelete.className = "troop-level-config-delete";
-
-        btnDelete.title = "Delete level";
-
-        btnDelete.appendChild(Icons.create(Icons.DELETE));
-
-        btnDelete.addEventListener("click", () => {
-            removeLevel(level.value);
-        });
-
-        row.append(label, btnDelete);
-
-        return row;
-    }
-
     function renderDefaultLevel(value) {
-        defaultLevel = value === null ? null : String(value);
+        defaultLevel = String(value);
 
         renderDefaultLevelOptions();
     }
 
     function renderDefaultLevelOptions() {
-        const previousValue = defaultLevelSelect.value;
+        const levels = Config.getTroopLevels();
 
         defaultLevelSelect.replaceChildren();
-
-        if (levels.length === 0) {
-            const option = document.createElement("option");
-
-            option.value = "";
-            option.textContent = "No levels";
-
-            defaultLevelSelect.appendChild(option);
-
-            defaultLevelSelect.disabled = true;
-
-            return;
-        }
-
-        defaultLevelSelect.disabled = false;
 
         levels.forEach(level => {
             const option = document.createElement("option");
@@ -348,28 +215,16 @@ const UITroopDividerConfig = (() => {
             defaultLevelSelect.appendChild(option);
         });
 
-        const configuredExists = defaultLevel !== null && levels.some(level => level.value === defaultLevel);
+        const configuredExists = levels.some(level => level.value === defaultLevel);
 
-        if (configuredExists) {
-            defaultLevelSelect.value = defaultLevel;
-
-            return;
-        }
-
-        const previousExists = levels.some(level => level.value === previousValue);
-
-        defaultLevelSelect.value = previousExists ? previousValue : levels[0].value;
+        defaultLevelSelect.value = configuredExists ? defaultLevel : Config.getDefaultTroopLevel();
     }
 
     async function saveDefaultLevel() {
         try {
-            if (defaultLevelSelect.value === "") {
-                return;
-            }
-
             await Config.updateDefaultTroopLevel(defaultLevelSelect.value);
 
-            showSuccess(levelsSection);
+            showSuccess(defaultLevelSection);
         } catch (error) {
             ErrorHandler.handle(error, "Saving default troop level");
         }
@@ -407,6 +262,7 @@ const UITroopDividerConfig = (() => {
             profileSelect.disabled = true;
 
             clearProfileForm();
+
             renderProfileActions();
 
             return;
@@ -421,6 +277,7 @@ const UITroopDividerConfig = (() => {
         profileSelect.value = selectedProfileId;
 
         renderSelectedProfile();
+
         renderProfileActions();
     }
 
@@ -490,6 +347,7 @@ const UITroopDividerConfig = (() => {
         clearProfileInvalidState();
 
         renderPercentageTotal();
+
         renderPriorityState();
     }
 
@@ -536,7 +394,9 @@ const UITroopDividerConfig = (() => {
         clearProfileInvalidState();
 
         renderPercentageTotal();
+
         renderPriorityState();
+
         renderProfileActions();
 
         inputProfileName.focus();
@@ -765,6 +625,7 @@ const UITroopDividerConfig = (() => {
         clearProfileInvalidState();
 
         renderPercentageTotal();
+
         renderPriorityState();
     }
 
@@ -827,9 +688,9 @@ const UITroopDividerConfig = (() => {
         element.classList.add(className);
     }
 
-    function handleLevelsAnimationEnd(event) {
-        if (event.target === levelsSection && event.animationName === "feedbackSuccessFade") {
-            levelsSection.classList.remove("feedback-success");
+    function handleDefaultLevelAnimationEnd(event) {
+        if (event.target === defaultLevelSection && event.animationName === "feedbackSuccessFade") {
+            defaultLevelSection.classList.remove("feedback-success");
         }
     }
 

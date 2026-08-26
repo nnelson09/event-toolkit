@@ -527,30 +527,68 @@
     align-items: center;
     justify-content: space-between;
 
+    gap: 8px;
+
     background: var(--bg-tertiary);
 
     border-bottom: 1px solid var(--border-dark);
 }
 
 .troop-formation-group-title {
+    min-width: 0;
+
     color: var(--primary);
 
     font-size: 10px;
     font-weight: 600;
+
+    white-space: nowrap;
 }
 
-.troop-formation-group-capacity {
+.troop-formation-group-metrics {
+    min-width: 0;
+
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.troop-formation-group-metric {
+    min-width: 0;
+
+    display: inline-flex;
+    align-items: baseline;
+
+    gap: 2px;
+}
+
+.troop-formation-group-metric-label {
     color: var(--text-muted);
+
+    font-size: 7px;
+}
+
+.troop-formation-group-metric-value {
+    color: var(--text);
 
     font-family: Consolas, monospace;
 
     font-size: 9px;
+    font-weight: 600;
+}
+
+.troop-formation-group-metric.usage .troop-formation-group-metric-value {
+    color: var(--primary);
 }
 
 /*
  * One row per troop level:
  *
- * Lv. 10 | I 12,345 | C 12,345 | A 98,765
+ * T10 | I 12,345 | C 12,345 | A 98,765
  */
 
 .troop-level-row {

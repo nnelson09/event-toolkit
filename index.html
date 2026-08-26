@@ -320,21 +320,11 @@
 
                 <div id="troopLevelsConfigSection" class="troop-divider-config-section">
                     <div class="troop-divider-config-section-header">
-                        <div class="troop-divider-config-section-title">Troop Levels</div>
+                        <div class="troop-divider-config-section-title">Troop Level</div>
                     </div>
 
-                    <div class="troop-level-config-add">
-                        <input id="troopConfigLevel" type="text" inputmode="numeric" autocomplete="off" placeholder="Level" />
-
-                        <button id="btnTroopConfigLevelAdd" class="troop-divider-config-action add" type="button" title="Add level"></button>
-                    </div>
-
-                    <div id="troopConfigLevelListContainer" class="troop-level-config-list-container" hidden>
-                        <div id="troopConfigLevelList" class="troop-level-config-list"></div>
-                    </div>
-
-                    <div class="troop-level-config-default">
-                        <label for="troopConfigDefaultLevel">Default</label>
+                    <div class="troop-divider-config-row troop-divider-config-default-row">
+                        <label class="troop-divider-config-label" for="troopConfigDefaultLevel">Default</label>
 
                         <select id="troopConfigDefaultLevel"></select>
                     </div>
@@ -358,13 +348,13 @@
                     </div>
 
                     <div class="troop-divider-config-row">
-                        <label class="troop-divider-config-label" for="troopConfigProfileName"> Name </label>
+                        <label class="troop-divider-config-label" for="troopConfigProfileName">Name</label>
 
                         <input id="troopConfigProfileName" type="text" autocomplete="off" />
                     </div>
 
                     <div class="troop-divider-config-row">
-                        <label class="troop-divider-config-label" for="troopConfigQueues"> Queues </label>
+                        <label class="troop-divider-config-label" for="troopConfigQueues">Queues</label>
 
                         <div class="troop-divider-config-queue-options">
                             <select id="troopConfigQueues">
@@ -378,6 +368,7 @@
 
                             <label class="troop-divider-config-own">
                                 <input id="troopConfigOwnQueue" type="checkbox" />
+
                                 Own queue
                             </label>
                         </div>
@@ -386,19 +377,19 @@
                     <div class="troop-divider-config-subtitle">Capacity</div>
 
                     <div class="troop-divider-config-row">
-                        <label class="troop-divider-config-label" for="troopCapacityBase"> Base </label>
+                        <label class="troop-divider-config-label" for="troopCapacityBase">Base</label>
 
                         <input id="troopCapacityBase" type="text" inputmode="numeric" autocomplete="off" placeholder="0" />
                     </div>
 
                     <div class="troop-divider-config-row">
-                        <label class="troop-divider-config-label" for="troopCapacityPerHero"> Per Hero </label>
+                        <label class="troop-divider-config-label" for="troopCapacityPerHero">Per Hero</label>
 
                         <input id="troopCapacityPerHero" type="text" inputmode="numeric" autocomplete="off" placeholder="0" />
                     </div>
 
                     <div class="troop-divider-config-row">
-                        <label class="troop-divider-config-label" for="troopConfigExtra"> Extra </label>
+                        <label class="troop-divider-config-label" for="troopConfigExtra">Extra</label>
 
                         <input id="troopConfigExtra" type="text" inputmode="numeric" autocomplete="off" placeholder="0" />
                     </div>
@@ -406,7 +397,7 @@
                     <div class="troop-divider-config-subtitle">
                         <span>Percentages</span>
 
-                        <span id="troopConfigPercentageTotal" class="troop-divider-config-percentage-total"> Total 0% </span>
+                        <span id="troopConfigPercentageTotal" class="troop-divider-config-percentage-total">Total 0%</span>
                     </div>
 
                     <div class="troop-divider-config-percentages">
@@ -496,17 +487,17 @@
 
                 <div class="resource-balance-content">
                     <div class="resource-balance-form">
-                        <span class="resource-balance-column-title resource-balance-current-title"> Current </span>
+                        <span class="resource-balance-column-title resource-balance-current-title">Current</span>
 
-                        <span class="resource-balance-column-title resource-balance-items-title"> Items </span>
+                        <span class="resource-balance-column-title resource-balance-items-title">Items</span>
 
-                        <label class="resource-balance-input-label bread" for="resourceBalance-bread"> Bread </label>
+                        <label class="resource-balance-input-label bread" for="resourceBalance-bread">Bread</label>
 
-                        <label class="resource-balance-input-label wood" for="resourceBalance-wood"> Wood </label>
+                        <label class="resource-balance-input-label wood" for="resourceBalance-wood">Wood</label>
 
-                        <label class="resource-balance-input-label stone" for="resourceBalance-stone"> Stone </label>
+                        <label class="resource-balance-input-label stone" for="resourceBalance-stone">Stone</label>
 
-                        <label class="resource-balance-input-label iron" for="resourceBalance-iron"> Iron </label>
+                        <label class="resource-balance-input-label iron" for="resourceBalance-iron">Iron</label>
 
                         <input id="resourceBalance-bread" class="resource-balance-input current bread" type="text" inputmode="decimal" autocomplete="off" placeholder="0" />
 

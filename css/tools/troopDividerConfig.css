@@ -144,6 +144,10 @@
     gap: 6px;
 }
 
+.troop-divider-config-row:last-child {
+    margin-bottom: 0;
+}
+
 .troop-divider-config-label {
     width: 64px;
 
@@ -155,6 +159,12 @@
 }
 
 .troop-divider-config-row > input {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.troop-divider-config-default-row select {
     min-width: 0;
 
     flex: 1;
@@ -175,6 +185,7 @@
 
     font-size: 9px;
     font-weight: 600;
+
     text-transform: uppercase;
 }
 
@@ -308,155 +319,4 @@
 
 .troop-divider-config-percentage-total.invalid {
     color: var(--danger);
-}
-
-/* Troop levels */
-
-.troop-level-config-add {
-    display: flex;
-
-    gap: 4px;
-}
-
-.troop-level-config-add input {
-    min-width: 0;
-
-    flex: 1;
-}
-
-.troop-level-config-list-container {
-    position: relative;
-
-    margin-top: 9px;
-    padding-top: 9px;
-}
-
-.troop-level-config-list-container[hidden] {
-    display: none;
-}
-
-.troop-level-config-list-container::before {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 50%;
-
-    width: 94%;
-    height: 1px;
-
-    background: var(--border-dark);
-
-    transform: translateX(-50%);
-}
-
-.troop-level-config-list {
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-}
-
-.troop-level-config-row {
-    padding: 4px 5px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 6px;
-
-    background: var(--bg-tertiary);
-
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-small);
-}
-
-.troop-level-config-name {
-    min-width: 0;
-
-    color: var(--text-secondary);
-
-    font-size: 10px;
-    font-weight: 600;
-}
-
-.troop-level-config-delete {
-    width: 22px;
-    height: 22px;
-    padding: 0;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    background: transparent;
-
-    border: 1px solid transparent;
-    border-radius: var(--radius-small);
-
-    color: var(--text-muted);
-
-    transition:
-        background var(--transition),
-        border-color var(--transition),
-        color var(--transition),
-        transform var(--transition-fast);
-}
-
-.troop-level-config-delete:hover {
-    background: var(--danger);
-
-    border-color: var(--danger);
-
-    color: var(--text-inverse);
-}
-
-.troop-level-config-delete:active {
-    transform: scale(0.95);
-}
-
-.troop-level-config-default {
-    position: relative;
-
-    margin-top: 9px;
-    padding-top: 9px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 6px;
-}
-
-.troop-level-config-default::before {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 50%;
-
-    width: 94%;
-    height: 1px;
-
-    background: var(--border-dark);
-
-    transform: translateX(-50%);
-}
-
-.troop-level-config-default label {
-    width: 64px;
-
-    flex: 0 0 64px;
-
-    color: var(--text-secondary);
-
-    font-size: 10px;
-}
-
-.troop-level-config-default select {
-    min-width: 0;
-
-    flex: 1;
 }

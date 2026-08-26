@@ -1,27 +1,35 @@
 const Config = (() => {
-    const TROOP_LEVELS = "troopLevels";
     const DEFAULT_TROOP_LEVEL = "defaultTroopLevel";
     const TROOP_DIVIDER_PROFILES = "troopDividerProfiles";
 
     const TROOP_TYPES = ["infantry", "cavalry", "archer"];
 
-    const troopLevelListeners = [];
+    const FALLBACK_TROOP_LEVEL = "10";
+
+    const TROOP_LEVELS = Array.from(
+        {
+            length: 10
+        },
+        (_, index) => {
+            const value = String(10 - index);
+
+            return {
+                value,
+                label: `T${value}`
+            };
+        }
+    );
+
     const defaultTroopLevelListeners = [];
     const troopDividerProfileListeners = [];
 
-    let troopLevels = [];
     let defaultTroopLevel = null;
     let troopDividerProfiles = [];
 
-    let unsubscribeTroopLevels = null;
     let unsubscribeDefaultTroopLevel = null;
     let unsubscribeTroopDividerProfiles = null;
 
     function start() {
-        if (!unsubscribeTroopLevels) {
-            unsubscribeTroopLevels = Firebase.listenConfig(TROOP_LEVELS, handleTroopLevelsChanged);
-        }
-
         if (!unsubscribeDefaultTroopLevel) {
             unsubscribeDefaultTroopLevel = Firebase.listenConfig(DEFAULT_TROOP_LEVEL, handleDefaultTroopLevelChanged);
         }
@@ -32,11 +40,6 @@ const Config = (() => {
     }
 
     function stop() {
-        if (unsubscribeTroopLevels) {
-            unsubscribeTroopLevels();
-            unsubscribeTroopLevels = null;
-        }
-
         if (unsubscribeDefaultTroopLevel) {
             unsubscribeDefaultTroopLevel();
             unsubscribeDefaultTroopLevel = null;
@@ -47,33 +50,29 @@ const Config = (() => {
             unsubscribeTroopDividerProfiles = null;
         }
 
-        troopLevels = [];
         defaultTroopLevel = null;
         troopDividerProfiles = [];
 
-        notifyTroopLevelsChanged();
         notifyDefaultTroopLevelChanged();
         notifyTroopDividerProfilesChanged();
     }
 
     function getTroopLevels() {
-        return troopLevels.map(level => ({
+        return TROOP_LEVELS.map(level => ({
             ...level
         }));
     }
 
     function getTroopLevelLabel(value) {
-        validateLevelValue(value);
+        const normalizedValue = normalizeLevelValue(value);
 
-        const normalizedValue = String(value);
+        const level = TROOP_LEVELS.find(level => level.value === normalizedValue);
 
-        const level = troopLevels.find(level => level.value === normalizedValue);
-
-        return level ? level.label : normalizedValue;
+        return level.label;
     }
 
     function getDefaultTroopLevel() {
-        return defaultTroopLevel;
+        return defaultTroopLevel ?? FALLBACK_TROOP_LEVEL;
     }
 
     function getTroopDividerProfiles() {
@@ -109,13 +108,9 @@ const Config = (() => {
     function onTroopLevelsChanged(callback) {
         validateCallback(callback);
 
-        troopLevelListeners.push(callback);
-
         callback(getTroopLevels());
 
-        return () => {
-            removeListener(troopLevelListeners, callback);
-        };
+        return () => {};
     }
 
     function onDefaultTroopLevelChanged(callback) {
@@ -142,50 +137,8 @@ const Config = (() => {
         };
     }
 
-    async function addTroopLevel(value) {
-        const normalized = normalizeLevelValue(value);
-
-        const exists = troopLevels.some(level => level.value === normalized);
-
-        if (exists) {
-            throw new RangeError(`Troop level ${normalized} already exists.`);
-        }
-
-        await Firebase.setConfig(`${TROOP_LEVELS}/${normalized}`, {
-            value: normalized,
-            label: `Lv. ${normalized}`
-        });
-    }
-
-    async function removeTroopLevel(value) {
-        const normalized = normalizeLevelValue(value);
-
-        const exists = troopLevels.some(level => level.value === normalized);
-
-        if (!exists) {
-            return;
-        }
-
-        await Firebase.setConfig(`${TROOP_LEVELS}/${normalized}`, null);
-
-        if (defaultTroopLevel === normalized) {
-            await Firebase.setConfig(DEFAULT_TROOP_LEVEL, null);
-        }
-    }
-
     async function updateDefaultTroopLevel(value) {
-        if (value === null) {
-            await Firebase.setConfig(DEFAULT_TROOP_LEVEL, null);
-            return;
-        }
-
         const normalized = normalizeLevelValue(value);
-
-        const exists = troopLevels.some(level => level.value === normalized);
-
-        if (!exists) {
-            throw new RangeError("Default troop level must be one of the configured troop levels.");
-        }
 
         await Firebase.setConfig(DEFAULT_TROOP_LEVEL, normalized);
     }
@@ -222,12 +175,6 @@ const Config = (() => {
         await Firebase.setConfig(`${TROOP_DIVIDER_PROFILES}/${id}`, null);
     }
 
-    function handleTroopLevelsChanged(data) {
-        troopLevels = normalizeTroopLevels(data);
-
-        notifyTroopLevelsChanged();
-    }
-
     function handleDefaultTroopLevelChanged(data) {
         if (data === null) {
             defaultTroopLevel = null;
@@ -248,47 +195,11 @@ const Config = (() => {
         notifyTroopDividerProfilesChanged();
     }
 
-    function normalizeTroopLevels(data) {
-        if (data === null) {
-            return [];
-        }
-
-        if (!Array.isArray(data) && (typeof data !== "object" || data === null)) {
-            throw new TypeError("Troop levels configuration must be an array, object, or null.");
-        }
-
-        const levels = Array.isArray(data) ? data : Object.values(data);
-
-        return levels.map(normalizeTroopLevel).sort((a, b) => Number(b.value) - Number(a.value));
-    }
-
-    function normalizeTroopLevel(level) {
-        if (typeof level === "string" || (typeof level === "number" && Number.isFinite(level))) {
-            const value = normalizeLevelValue(level);
-
-            return {
-                value,
-                label: `Lv. ${value}`
-            };
-        }
-
-        if (typeof level !== "object" || level === null || level.value === undefined) {
-            throw new TypeError("Each troop level must contain a value.");
-        }
-
-        const value = normalizeLevelValue(level.value);
-
-        return {
-            value,
-            label: `Lv. ${value}`
-        };
-    }
-
     function normalizeLevelValue(value) {
         const number = Number(value);
 
-        if (!Number.isInteger(number) || number < 0) {
-            throw new RangeError("Troop level must be a non-negative integer.");
+        if (!Number.isInteger(number) || number < 1 || number > 10) {
+            throw new RangeError("Troop level must be an integer between 1 and 10.");
         }
 
         return String(number);
@@ -320,10 +231,15 @@ const Config = (() => {
         }
 
         const queues = normalizeQueueCount(profile.queues);
+
         const ownQueue = normalizeOwnQueue(profile.ownQueue);
+
         const capacity = normalizeTroopCapacity(profile.capacity);
+
         const extra = normalizeExtra(profile.extra);
+
         const percentages = normalizePercentages(profile.percentages);
+
         const priority = normalizePriority(profile.priority);
 
         return {
@@ -344,9 +260,11 @@ const Config = (() => {
         }
 
         const base = Number(capacity.base);
+
         const perHero = Number(capacity.perHero);
 
         validateCapacityValue(base, "Base troop capacity");
+
         validateCapacityValue(perHero, "Troop capacity per hero");
 
         return {
@@ -432,7 +350,9 @@ const Config = (() => {
             normalized[type] = percentage;
         });
 
-        const total = Object.values(normalized).reduce((sum, value) => sum + value, 0);
+        const total = Object.values(normalized).reduce((sum, value) => {
+            return sum + value;
+        }, 0);
 
         if (total !== 100) {
             throw new RangeError("Troop Divider profile percentages must add up to 100.");
@@ -471,10 +391,6 @@ const Config = (() => {
         }
     }
 
-    function validateLevelValue(value) {
-        normalizeLevelValue(value);
-    }
-
     function validateCapacityValue(value, name) {
         if (!Number.isInteger(value)) {
             throw new TypeError(`${name} must be an integer.`);
@@ -499,17 +415,11 @@ const Config = (() => {
         }
     }
 
-    function notifyTroopLevelsChanged() {
-        const levels = getTroopLevels();
-
-        troopLevelListeners.forEach(callback => {
-            callback(levels);
-        });
-    }
-
     function notifyDefaultTroopLevelChanged() {
+        const value = getDefaultTroopLevel();
+
         defaultTroopLevelListeners.forEach(callback => {
-            callback(getDefaultTroopLevel());
+            callback(value);
         });
     }
 
@@ -534,8 +444,6 @@ const Config = (() => {
         onDefaultTroopLevelChanged,
         onTroopDividerProfilesChanged,
 
-        addTroopLevel,
-        removeTroopLevel,
         updateDefaultTroopLevel,
 
         addTroopDividerProfile,

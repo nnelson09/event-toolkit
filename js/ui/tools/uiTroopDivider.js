@@ -115,9 +115,7 @@ const UITroopDivider = (() => {
 
         Config.onTroopLevelsChanged(renderTroopLevels);
 
-        Config.onDefaultTroopLevelChanged(() => {
-            applyDefaultLevel();
-        });
+        Config.onDefaultTroopLevelChanged(applyDefaultLevel);
 
         Config.onTroopDividerProfilesChanged(renderProfiles);
     }
@@ -297,12 +295,6 @@ const UITroopDivider = (() => {
     function applyDefaultLevel() {
         const levels = Config.getTroopLevels();
 
-        if (levels.length === 0) {
-            levelSelect.value = "";
-
-            return;
-        }
-
         const defaultLevel = Config.getDefaultTroopLevel();
 
         const defaultExists = levels.some(level => level.value === defaultLevel);
@@ -381,7 +373,7 @@ const UITroopDivider = (() => {
     }
 
     function compareEnteredTroops(a, b) {
-        const levelDifference = Number(a.level) - Number(b.level);
+        const levelDifference = Number(b.level) - Number(a.level);
 
         if (levelDifference !== 0) {
             return levelDifference;
@@ -402,7 +394,7 @@ const UITroopDivider = (() => {
 
         name.className = "troop-entered-name";
 
-        name.textContent = `${formatType(troop.type)} ` + Config.getTroopLevelLabel(troop.level);
+        name.textContent = `${formatType(troop.type)} ${Config.getTroopLevelLabel(troop.level)}`;
 
         const amount = document.createElement("div");
 
@@ -466,8 +458,6 @@ const UITroopDivider = (() => {
     }
 
     function renderTroopLevels(levels) {
-        const currentValue = readSelectValue(levelSelect);
-
         levelSelect.replaceChildren();
 
         levels.forEach(level => {
@@ -478,18 +468,6 @@ const UITroopDivider = (() => {
 
             levelSelect.appendChild(option);
         });
-
-        if (levels.length === 0) {
-            return;
-        }
-
-        const currentExists = currentValue !== null && levels.some(level => level.value === currentValue);
-
-        if (currentExists) {
-            levelSelect.value = currentValue;
-
-            return;
-        }
 
         applyDefaultLevel();
     }
@@ -541,6 +519,7 @@ const UITroopDivider = (() => {
 
         if (!profile) {
             renderUnavailable();
+
             clearSummary();
 
             return;
@@ -548,6 +527,7 @@ const UITroopDivider = (() => {
 
         if (!heroConfig.valid) {
             renderHeroConfigurationRequired();
+
             clearSummary();
 
             return;
@@ -555,6 +535,7 @@ const UITroopDivider = (() => {
 
         if (troops.size === 0) {
             renderEmpty();
+
             clearSummary();
 
             return;
@@ -730,23 +711,57 @@ const UITroopDivider = (() => {
 
         title.textContent = formatGroupTitle(group);
 
-        const capacityElement = document.createElement("div");
+        const formation = group.formations[0];
 
-        capacityElement.className = "troop-formation-group-capacity";
+        const usagePercentage = formation.capacity === 0 ? 0 : (formation.total / formation.capacity) * 100;
 
-        capacityElement.textContent = formatNumber(group.capacity);
+        const metrics = document.createElement("div");
 
-        header.append(title, capacityElement);
+        metrics.className = "troop-formation-group-metrics";
+
+        metrics.append(
+            createFormationMetric("Capacity", formatNumber(formation.capacity)),
+            createFormationMetric("Used", formatNumber(formation.total)),
+            createFormationMetric("Usage", formatUsagePercentage(usagePercentage), "usage")
+        );
+
+        header.append(title, metrics);
 
         card.appendChild(header);
 
-        const levelGroups = groupTroopsByLevel(group.formations[0].troops);
+        const levelGroups = groupTroopsByLevel(formation.troops);
 
         levelGroups.forEach(levelGroup => {
             card.appendChild(createLevelRow(levelGroup));
         });
 
         return card;
+    }
+
+    function createFormationMetric(label, value, className = "") {
+        const metric = document.createElement("div");
+
+        metric.className = "troop-formation-group-metric";
+
+        if (className !== "") {
+            metric.classList.add(className);
+        }
+
+        const labelElement = document.createElement("span");
+
+        labelElement.className = "troop-formation-group-metric-label";
+
+        labelElement.textContent = label;
+
+        const valueElement = document.createElement("span");
+
+        valueElement.className = "troop-formation-group-metric-value";
+
+        valueElement.textContent = value;
+
+        metric.append(labelElement, valueElement);
+
+        return metric;
     }
 
     function formatGroupTitle(group) {
